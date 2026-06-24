@@ -1,7 +1,5 @@
 /*
-Conversion Between Ordinal System A and B
-Defintion : https://github.com/RNGDelak/ord-limbms/blob/main/README.md (in the extends this idea section)
-Assuming that Lim(A) < Lim(B)
+For pretty pringtin use A.pretty
 */
 
 // System A for this example : CNF
