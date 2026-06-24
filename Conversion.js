@@ -26,7 +26,7 @@ class A {
     }
 
     static single(str) {
-        return !A.asp(str)[1];
+        return !this.asp(str)[1];
     }
 
     static lt(a, b) {
@@ -35,27 +35,27 @@ class A {
         if (b === "Limit") return true;
         if (!a) return true;
 
-        if (!A.single(a) && !A.single(b)) {
-            const a1 = A.asp(a);
-            const b1 = A.asp(b);
+        if (!this.single(a) && !this.single(b)) {
+            const a1 = this.asp(a);
+            const b1 = this.asp(b);
             return (
-                A.lt(a1[0], b1[0]) ||
-                (!A.lt(b1[0], a1[0]) && A.lt(a1[1], b1[1]))
+                this.lt(a1[0], b1[0]) ||
+                (!this.lt(b1[0], a1[0]) && this.lt(a1[1], b1[1]))
             );
         }
 
-        if (!A.single(a) && A.single(b))
-            return A.lt(A.asp(a)[0], b);
+        if (!this.single(a) && this.single(b))
+            return this.lt(this.asp(a)[0], b);
 
-        if (A.single(a) && !A.single(b))
-            return !A.lt(A.asp(b)[0], a);
+        if (this.single(a) && !this.single(b))
+            return !this.lt(this.asp(b)[0], a);
 
-        return A.lt(A.vsp(a)[0], A.vsp(b)[0]);
+        return this.lt(this.vsp(a)[0], this.vsp(b)[0]);
     }
 
     static cmp(a, b) {
         if (a === b) return 0;
-        return A.lt(a, b) ? -1 : 1;
+        return this.lt(a, b) ? -1 : 1;
     }
 
     static isSuccessor(a) {
@@ -70,44 +70,44 @@ class A {
     }
 
     static fs(a, n = "") {
-        if (typeof n === "number") n = A.to_str(n+1);
+        if (typeof n === "number") n = this.to_str(n+1);
 
         if (!a) return "";
 
         if (a === "Limit")
-            return n ? `(${A.fs(a, A.fs(n))})` : "";
+            return n ? `(${this.fs(a, this.fs(n))})` : "";
 
-        if (!A.single(a)) {
-            const a1 = A.asp(a);
-            return a1[0] + A.fs(a1[1], n);
+        if (!this.single(a)) {
+            const a1 = this.asp(a);
+            return a1[0] + this.fs(a1[1], n);
         }
 
-        const inside = A.vsp(a)[0];
+        const inside = this.vsp(a)[0];
 
         if (!inside) return "";
 
-        if (A.cof(inside) === "()") {
+        if (this.cof(inside) === "()") {
             return n
-                ? `${A.fs(a, A.fs(n))}(${A.fs(inside)})`
+                ? `${this.fs(a, this.fs(n))}(${this.fs(inside)})`
                 : "";
         }
 
-        return `(${A.fs(inside, n)})`;
+        return `(${this.fs(inside, n)})`;
     }
 
     static pretty(a) {
         if (!a) return "0";
 
-        if (!A.single(a)) {
-            const [x, y] = A.asp(a);
-            return `${A.pretty(x)}+${A.pretty(y)}`;
+        if (!this.single(a)) {
+            const [x, y] = this.asp(a);
+            return `${this.pretty(x)}+${this.pretty(y)}`;
         }
 
-        const e = A.vsp(a)[0];
+        const e = this.vsp(a)[0];
 
         if (!e) return "1";
 
-        const pe = A.pretty(e);
+        const pe = this.pretty(e);
 
         return pe === "1"
             ? "ω"
@@ -120,9 +120,9 @@ class A {
         let n = 0;
 
         while (true) {
-            const x = A.fs(beta, n);
+            const x = this.fs(beta, n);
 
-            if (A.cmp(x, alpha) > 0) {
+            if (this.cmp(x, alpha) > 0) {
                 return x;
             }
 
@@ -131,9 +131,9 @@ class A {
     }
 
     static g(alpha, beta, s) {
-        if (A.isSuccessor(beta)) return alpha;
+        if (this.isSuccessor(beta)) return alpha;
 
-        const split = A.f(alpha, beta);
+        const split = this.f(alpha, beta);
 
         if (s === "") return split;
 
@@ -141,29 +141,30 @@ class A {
         const rest = s.slice(1);
 
         if (bit === "0")
-            return A.g(alpha, split, rest);
+            return this.g(alpha, split, rest);
 
-        return A.g(split, beta, rest);
+        return this.g(split, beta, rest);
     }
 
     static gInv(alpha, beta, target) {
-        if (A.isSuccessor(beta)) return "";
+        if (this.isSuccessor(beta)) return "";
 
-        const split = A.f(alpha, beta);
-        const c = A.cmp(target, split);
+        const split = this.f(alpha, beta);
+        const c = this.cmp(target, split);
 
         if (c === 0) return "";
 
         if (c < 0)
-            return "0" + A.gInv(alpha, split, target);
+            return "0" + this.gInv(alpha, split, target);
 
-        return "1" + A.gInv(split, beta, target);
+        return "1" + this.gInv(split, beta, target);
     }
 
-    static h(x, k = 0.5) {
-        let result = "";
+    static Maxlen = 1000
+	static h(x, k = 0.5) {
+    	let result = "";
 
-        while (x !== k) {
+   	 	while (x !== k && result.length < this.Maxlen) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -183,9 +184,9 @@ class A {
         const rest = s.slice(1);
 
         if (bit === "0")
-            return k * A.hInv(rest, k);
+            return k * this.hInv(rest, k);
 
-        return k + (1 - k) * A.hInv(rest, k);
+        return k + (1 - k) * this.hInv(rest, k);
     }
 }
 
@@ -234,9 +235,9 @@ class B {
 
         while (true) {
 
-            const x = B.fs(beta, n);
+            const x = this.fs(beta, n);
 
-            if (B.cmp(x, alpha) > 0) {
+            if (this.cmp(x, alpha) > 0) {
                 return x;
             }
 
@@ -246,28 +247,29 @@ class B {
 
 
     static g(alpha, beta, s) {
-        if (B.isSuccessor(beta)) return alpha;
-        const split = B.f(alpha, beta);
+        if (this.isSuccessor(beta)) return alpha;
+        const split = this.f(alpha, beta);
         if (s === "") return split;
         const bit = s[0];
         const rest = s.slice(1);
-        if (bit === "0") return B.g(alpha, split, rest);
-        return B.g(split, beta, rest);
+        if (bit === "0") return this.g(alpha, split, rest);
+        return this.g(split, beta, rest);
     }
 
     static gInv(alpha, beta, target) {
-        if (B.isSuccessor(beta)) return "";
-        const split = B.f(alpha, beta);
-        const c = B.cmp(target, split);
+        if (this.isSuccessor(beta)) return "";
+        const split = this.f(alpha, beta);
+        const c = this.cmp(target, split);
         if (c === 0) return "";
-        if (c < 0) return "0" + B.gInv(alpha, split, target);
-        return "1" + B.gInv(split, beta, target);
+        if (c < 0) return "0" + this.gInv(alpha, split, target);
+        return "1" + this.gInv(split, beta, target);
     }
 
-    static h(x, k = 0.5) {
-        let result = "";
+    static Maxlen = 1000
+	static h(x, k = 0.5) {
+    	let result = "";
 
-        while (x !== k) {
+   	 	while (x !== k && result.length < this.Maxlen) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -284,8 +286,8 @@ class B {
         if (s === "") return k;
         const bit = s[0];
         const rest = s.slice(1);
-        if (bit === "0") return k * B.hInv(rest, k);
-        return k + (1 - k) * B.hInv(rest, k);
+        if (bit === "0") return k * this.hInv(rest, k);
+        return k + (1 - k) * this.hInv(rest, k);
     }
 }
 
