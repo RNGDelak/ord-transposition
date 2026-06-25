@@ -518,20 +518,18 @@ class Y_Sequence {
     }
 }
 
-let LimAinB = [1,3] // Lim(BMS) is 1,3 in y
+let Lim_BMS_in_Yseq = [1,3] // Lim(BMS) is 1,3 in y
 
 /*
 THIS IS JUST AN APPROXIMATION NOT EXACT
-TO CHECK WHENTHER THE CONVERSION IS CORRECT, check if A == ConvB(ConvA(A)) for a is written in BMS
+AFTER BH , IT SEEMS WRONG FOR ALL
 */
 
 function Conv_BMS(ord) {
-    return Y_Sequence.g(Y_Sequence.ZERO,LimAinB,BMS.gInv(BMS.ZERO,"Limit",ord))
-    // Inside intervals [Y_Sequence.ZERO,LimAinB] , the adress of that ordinal in A is preserved
+    return Y_Sequence.g(Y_Sequence.ZERO,Lim_BMS_in_Yseq,BMS.gInv(BMS.ZERO,"Limit",ord))
 }
 
 function Conv_Y_sequence(ord) {
-    return BMS.g(BMS.ZERO,"Limit",Y_Sequence.gInv(Y_Sequence.ZERO, LimAinB, ord));
-    // Inside intervals [Y_Sequence.ZERO,LimAinB] , the adress of that ordinal in B is preserved
+    return BMS.g(BMS.ZERO,"Limit",Y_Sequence.gInv(Y_Sequence.ZERO, Lim_BMS_in_Yseq, ord));
 }
 
