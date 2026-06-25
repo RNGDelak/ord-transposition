@@ -128,6 +128,7 @@ class CNF {
     }
 
     static g(alpha, beta, s) {
+    while (true) {
         if (this.isSuccessor(beta)) return alpha;
 
         const split = this.f(alpha, beta);
@@ -135,27 +136,36 @@ class CNF {
         if (s === "") return split;
 
         const bit = s[0];
-        const rest = s.slice(1);
+        s = s.slice(1);
 
-        if (bit === "0")
-            return this.g(alpha, split, rest);
-
-        return this.g(split, beta, rest);
+        if (bit === "0") {
+            beta = split;
+        } else {
+            alpha = split;
+        }
     }
+}
 
     static gInv(alpha, beta, target) {
-        if (this.isSuccessor(beta)) return "";
+    let result = "";
 
+    while (!this.isSuccessor(beta)) {
         const split = this.f(alpha, beta);
         const c = this.cmp(target, split);
 
-        if (c === 0) return "";
+        if (c === 0) break;
 
-        if (c < 0)
-            return "0" + this.gInv(alpha, split, target);
-
-        return "1" + this.gInv(split, beta, target);
+        if (c < 0) {
+            result += "0";
+            beta = split;
+        } else {
+            result += "1";
+            alpha = split;
+        }
     }
+
+    return result;
+}
 
     static h(x, k = 0.5) {
         let result = "";
@@ -174,16 +184,18 @@ class CNF {
     }
 
     static hInv(s, k = 0.5) {
-        if (s === "") return k;
+    let x = k;
 
-        const bit = s[0];
-        const rest = s.slice(1);
-
-        if (bit === "0")
-            return k * this.hInv(rest, k);
-
-        return k + (1 - k) * this.hInv(rest, k);
+    for (let i = s.length - 1; i >= 0; i--) {
+        if (s[i] === "0") {
+            x = k * x;
+        } else {
+            x = k + (1 - k) * x;
+        }
     }
+
+    return x;
+}
 }
 
 class B {
@@ -242,23 +254,44 @@ class B {
 
 
     static g(alpha, beta, s) {
+    while (true) {
         if (this.isSuccessor(beta)) return alpha;
+
         const split = this.f(alpha, beta);
+
         if (s === "") return split;
+
         const bit = s[0];
-        const rest = s.slice(1);
-        if (bit === "0") return this.g(alpha, split, rest);
-        return this.g(split, beta, rest);
+        s = s.slice(1);
+
+        if (bit === "0") {
+            beta = split;
+        } else {
+            alpha = split;
+        }
     }
+}
 
     static gInv(alpha, beta, target) {
-        if (this.isSuccessor(beta)) return "";
+    let result = "";
+
+    while (!this.isSuccessor(beta)) {
         const split = this.f(alpha, beta);
         const c = this.cmp(target, split);
-        if (c === 0) return "";
-        if (c < 0) return "0" + this.gInv(alpha, split, target);
-        return "1" + this.gInv(split, beta, target);
+
+        if (c === 0) break;
+
+        if (c < 0) {
+            result += "0";
+            beta = split;
+        } else {
+            result += "1";
+            alpha = split;
+        }
     }
+
+    return result;
+}
 
     static h(x, k = 0.5) {
         let result = "";
@@ -277,12 +310,18 @@ class B {
     }
 
     static hInv(s, k = 0.5) {
-        if (s === "") return k;
-        const bit = s[0];
-        const rest = s.slice(1);
-        if (bit === "0") return k * this.hInv(rest, k);
-        return k + (1 - k) * this.hInv(rest, k);
+    let x = k;
+
+    for (let i = s.length - 1; i >= 0; i--) {
+        if (s[i] === "0") {
+            x = k * x;
+        } else {
+            x = k + (1 - k) * x;
+        }
     }
+
+    return x;
+}
 }
 
 let Lim_CNF_in_LPrSS = [0, 2] // Lim(CNF) is 0,2 in LPrSS
