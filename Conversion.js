@@ -5,7 +5,7 @@ Assuming that Lim(A) < Lim(B)
 */
 
 // System A for this example : CNF
-class A {
+class CNF {
     static asp(str) {
         if (!str) return ["", ""];
         let depth = 0;
@@ -70,7 +70,7 @@ class A {
     }
 
     static fs(a, n = "") {
-        if (typeof n === "number") n = this.to_str(n+1);
+        if (typeof n === "number") n = this.to_str(n + 1);
 
         if (!a) return "";
 
@@ -160,11 +160,10 @@ class A {
         return "1" + this.gInv(split, beta, target);
     }
 
-    static Maxlen = 1000
-	static h(x, k = 0.5) {
-    	let result = "";
+    static h(x, k = 0.5) {
+        let result = "";
 
-   	 	while (x !== k && result.length < this.Maxlen) {
+        while (x !== k) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -194,37 +193,37 @@ class A {
 class B {
 
     static cmp(a, b) {
-    if (a == "Limit" && b == "Limit") return 0;
-    if (a == "Limit" && b != "Limit") return 1;
-    if (a != "Limit" && b == "Limit") return -1;
+        if (a == "Limit" && b == "Limit") return 0;
+        if (a == "Limit" && b != "Limit") return 1;
+        if (a != "Limit" && b == "Limit") return -1;
 
 
-    for (let i = 0; i < Math.min(a.length, b.length); i++) {
-        if (a[i] < b[i]) return -1;
-        if (a[i] > b[i]) return 1;
-    }
+        for (let i = 0; i < Math.min(a.length, b.length); i++) {
+            if (a[i] < b[i]) return -1;
+            if (a[i] > b[i]) return 1;
+        }
 
-    if (a.length < b.length) return -1;
-    if (a.length > b.length) return 1;
-    return 0;
+        if (a.length < b.length) return -1;
+        if (a.length > b.length) return 1;
+        return 0;
     }
 
     static fs(a, n) {
-    if (a == "Limit") return [0,n+1]
-	let out = [...a];
-	let cutNode = out.pop();
-	let root = out.length - 1;
-	while (out[root] >= cutNode && root > 0) root--;
-	let increment = cutNode - out[root] - 1;
-	let badPart = out.slice(root);
-	for (let i = 1; i < n; i++) {
-		out = out.concat(badPart.map(v => v + increment * i));
-	}
-	return out;
+        if (a == "Limit") return [0, n + 1]
+        let out = [...a];
+        let cutNode = out.pop();
+        let root = out.length - 1;
+        while (out[root] >= cutNode && root > 0) root--;
+        let increment = cutNode - out[root] - 1;
+        let badPart = out.slice(root);
+        for (let i = 1; i < n; i++) {
+            out = out.concat(badPart.map(v => v + increment * i));
+        }
+        return out;
     }
 
     static isSuccessor(a) {
-	return a !== "Limit" && (a.length === 0 || a.at(-1) === 0);
+        return a !== "Limit" && (a.length === 0 || a.at(-1) === 0);
     }
 
     static ZERO = [];
@@ -265,11 +264,10 @@ class B {
         return "1" + this.gInv(split, beta, target);
     }
 
-    static Maxlen = 1000
-	static h(x, k = 0.5) {
-    	let result = "";
+    static h(x, k = 0.5) {
+        let result = "";
 
-   	 	while (x !== k && result.length < this.Maxlen) {
+        while (x !== k) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -291,15 +289,19 @@ class B {
     }
 }
 
-let LimAinB = [0,2] // Lim(CNF) is 0,2 in LPrSS
+let LimAinB = [0, 2] // Lim(CNF) is 0,2 in LPrSS
 /*
 Special case : if lim(A) = Lim(B) then LimAinB = "Limit"
 */
 
-function ConvA(ord) {
-    return B.g(B.ZERO,LimAinB,A.gInv(A.ZERO,"Limit",ord))
-    // Inside intervals [B.ZERO,LimAinB] , the adress of that ordinal in A is preserved
+function Conv_CNF(ord) {
+    return LPrSS.g(LPrSS.ZERO, LimAinB, CNF.gInv(CNF.ZERO, "Limit", ord))
+    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in A is preserved
 }
+
+function Conv_LPrSS(ord) {
+    return CNF.g(CNF.ZERO, "Limit", LPrSS.gInv(LPrSS.ZERO, LimAinB, ord));
+    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in B is preserved
 
 function ConvB(ord) {
     return A.g(A.ZERO,"Limit",B.gInv(B.ZERO, LimAinB, ord));
