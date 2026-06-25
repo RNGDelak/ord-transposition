@@ -3,7 +3,7 @@
 function fs(s, n, legBasedAscension, stringify) {
     var lineBreakRegex = /\r?\n/g;
     var itemSeparatorRegex = /[\t ,]/g;
-    if (s == "Limit") return '1,' + tostring(n + 2);
+    if (s == "Limit") return '1,' + String(n + 2);
     function parseSequenceElement(s, i) {
         var strremoved = s;
         if (strremoved.indexOf("v") == -1 || !isFinite(Number(strremoved.substring(strremoved.indexOf("v") + 1)))) {
