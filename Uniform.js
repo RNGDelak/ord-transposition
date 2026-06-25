@@ -119,11 +119,10 @@ function gInv(alpha, beta, target) {
 /********************************************************
  * h(x) -- defined as iterative function, but can be defined as a recursive form but dangerous to use because of floating point error
  ********************************************************/
-const Maxlen = 1000
-function h(x, k = 0.5) {
+function h(x, k = 0.5, Maxlen = 100 , eps = 1e-10) {
     let result = "";
 
-    while (x !== k && result.length < Maxlen) {
+    while (result.length < Maxlen && Math.abs(x - k) > eps) {
         if (x < k) {
             result += "0";
             x = x / k;

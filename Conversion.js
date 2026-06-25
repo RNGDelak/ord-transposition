@@ -4,7 +4,6 @@ Defintion : https://github.com/RNGDelak/ord-limbms/blob/main/README.md (in the e
 Assuming that Lim(A) < Lim(B)
 */
 
-// System A for this example : CNF
 class CNF {
     static asp(str) {
         if (!str) return ["", ""];
@@ -131,49 +130,49 @@ class CNF {
     }
 
     static g(alpha, beta, s) {
-    while (true) {
-        if (this.isSuccessor(beta)) return alpha;
+        while (true) {
+            if (this.isSuccessor(beta)) return alpha;
 
-        const split = this.f(alpha, beta);
+            const split = this.f(alpha, beta);
 
-        if (s === "") return split;
+            if (s === "") return split;
 
-        const bit = s[0];
-        s = s.slice(1);
+            const bit = s[0];
+            s = s.slice(1);
 
-        if (bit === "0") {
-            beta = split;
-        } else {
-            alpha = split;
+            if (bit === "0") {
+                beta = split;
+            } else {
+                alpha = split;
+            }
         }
     }
-}
 
     static gInv(alpha, beta, target) {
-    let result = "";
-
-    while (!this.isSuccessor(beta)) {
-        const split = this.f(alpha, beta);
-        const c = this.cmp(target, split);
-
-        if (c === 0) break;
-
-        if (c < 0) {
-            result += "0";
-            beta = split;
-        } else {
-            result += "1";
-            alpha = split;
-        }
-    }
-
-    return result;
-}
-
-    static h(x, k = 0.5) {
         let result = "";
 
-        while (x !== k) {
+        while (!this.isSuccessor(beta)) {
+            const split = this.f(alpha, beta);
+            const c = this.cmp(target, split);
+
+            if (c === 0) break;
+
+            if (c < 0) {
+                result += "0";
+                beta = split;
+            } else {
+                result += "1";
+                alpha = split;
+            }
+        }
+
+        return result;
+    }
+
+    static h(x, k = 0.5 , maxlen = 100, eps = 1e-10) {
+        let result = "";
+
+        while (Math.abs(x - k) > eps && result.length < maxlen) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -187,22 +186,21 @@ class CNF {
     }
 
     static hInv(s, k = 0.5) {
-    let x = k;
+        let x = k;
 
-    for (let i = s.length - 1; i >= 0; i--) {
-        if (s[i] === "0") {
-            x = k * x;
-        } else {
-            x = k + (1 - k) * x;
+        for (let i = s.length - 1; i >= 0; i--) {
+            if (s[i] === "0") {
+                x = k * x;
+            } else {
+                x = k + (1 - k) * x;
+            }
         }
+
+        return x;
     }
-
-    return x;
-}
 }
 
-// System B for this example : LPrSS
-class B {
+class LPrSS {
 
     static cmp(a, b) {
         if (a == "Limit" && b == "Limit") return 0;
@@ -258,49 +256,49 @@ class B {
 
 
     static g(alpha, beta, s) {
-    while (true) {
-        if (this.isSuccessor(beta)) return alpha;
+        while (true) {
+            if (this.isSuccessor(beta)) return alpha;
 
-        const split = this.f(alpha, beta);
+            const split = this.f(alpha, beta);
 
-        if (s === "") return split;
+            if (s === "") return split;
 
-        const bit = s[0];
-        s = s.slice(1);
+            const bit = s[0];
+            s = s.slice(1);
 
-        if (bit === "0") {
-            beta = split;
-        } else {
-            alpha = split;
+            if (bit === "0") {
+                beta = split;
+            } else {
+                alpha = split;
+            }
         }
     }
-}
 
     static gInv(alpha, beta, target) {
-    let result = "";
-
-    while (!this.isSuccessor(beta)) {
-        const split = this.f(alpha, beta);
-        const c = this.cmp(target, split);
-
-        if (c === 0) break;
-
-        if (c < 0) {
-            result += "0";
-            beta = split;
-        } else {
-            result += "1";
-            alpha = split;
-        }
-    }
-
-    return result;
-}
-
-    static h(x, k = 0.5) {
         let result = "";
 
-        while (x !== k) {
+        while (!this.isSuccessor(beta)) {
+            const split = this.f(alpha, beta);
+            const c = this.cmp(target, split);
+
+            if (c === 0) break;
+
+            if (c < 0) {
+                result += "0";
+                beta = split;
+            } else {
+                result += "1";
+                alpha = split;
+            }
+        }
+
+        return result;
+    }
+
+    static h(x, k = 0.5, maxlen = 100, eps = 1e-10) {
+        let result = "";
+
+        while (Math.abs(x - k) > eps && result.length < maxlen) {
             if (x < k) {
                 result += "0";
                 x = x / k;
@@ -314,35 +312,26 @@ class B {
     }
 
     static hInv(s, k = 0.5) {
-    let x = k;
+        let x = k;
 
-    for (let i = s.length - 1; i >= 0; i--) {
-        if (s[i] === "0") {
-            x = k * x;
-        } else {
-            x = k + (1 - k) * x;
+        for (let i = s.length - 1; i >= 0; i--) {
+            if (s[i] === "0") {
+                x = k * x;
+            } else {
+                x = k + (1 - k) * x;
+            }
         }
+
+        return x;
     }
-
-    return x;
-}
 }
 
-let LimAinB = [0, 2] // Lim(CNF) is 0,2 in LPrSS
-/*
-Special case : if lim(A) = Lim(B) then LimAinB = "Limit"
-*/
+let Lim_CNF_in_LPrSS = [0, 2] // Lim(CNF) is 0,2 in LPrSS
 
 function Conv_CNF(ord) {
-    return LPrSS.g(LPrSS.ZERO, LimAinB, CNF.gInv(CNF.ZERO, "Limit", ord))
-    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in A is preserved
+    return LPrSS.g(LPrSS.ZERO, Lim_CNF_in_LPrSS, CNF.gInv(CNF.ZERO, "Limit", ord))
 }
 
 function Conv_LPrSS(ord) {
-    return CNF.g(CNF.ZERO, "Limit", LPrSS.gInv(LPrSS.ZERO, LimAinB, ord));
-    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in B is preserved
-
-function ConvB(ord) {
-    return A.g(A.ZERO,"Limit",B.gInv(B.ZERO, LimAinB, ord));
-    // Inside intervals [B.ZERO,LimAinB] , the adress of that ordinal in B is preserved
+    return CNF.g(CNF.ZERO, "Limit", LPrSS.gInv(LPrSS.ZERO, Lim_CNF_in_LPrSS, ord));
 }
