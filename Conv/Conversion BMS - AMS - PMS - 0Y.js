@@ -26,8 +26,41 @@ function BMStoPMS(matrix) {
     return newMatrix;
 }
 
+function PMStoBMS(matrix) {
+    const rows = matrix.length;
+    if (rows === 0) return [];
+
+    const cols = matrix[0].length;
+    const result = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+    for (let j = 0; j < cols; j++) {
+        for (let i = 0; i < rows; i++) {
+            const dist = matrix[i][j];
+
+            if (dist === 0) {
+                result[i][j] = 0;
+            } else {
+                const parent = i + 1 - dist; // 1-based row index
+
+                if (parent <= 0)
+                    throw new Error(`Invalid PMS at row ${i}, col ${j}`);
+
+                result[i][j] = result[parent - 1][j] + 1;
+            }
+        }
+    }
+
+    return result;
+}
+
 function PMStoAMS(matrix) {
     return matrix.map((row, i) => row.map(v => v == 0 ? 0 : i + 1 - v));
+}
+
+function AMStoPMS(matrix) {
+    return matrix.map((row, i) =>
+        row.map(v => v === 0 ? 0 : (i + 1) - v)
+    );
 }
 
 function AMSto0Y(matrix) {
@@ -71,6 +104,9 @@ function PMStoVZ(matrix) {
     return sequence.join(",");
 }
 
+
+
 /*
-Pipeline : BMS -> PMS -> AMS -> 0Y -> Vulcaniz
+Pipeline : BMS <-> PMS <-> AMS -> 0Y
+                               -> Vulcaniz
 */
