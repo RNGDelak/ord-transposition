@@ -1,5 +1,5 @@
 // dont care
-class A {
+class BMS {
     
     static cmp(m1, m2) {
     function sequence_compare(seq1, seq2) {
@@ -36,7 +36,7 @@ class A {
 
     const c = sequence_compare(col1, col2);
 
-    return c || A.cmp(m1.slice(1), m2.slice(1));
+    return c || this.cmp(m1.slice(1), m2.slice(1));
     }
 
     static isSuccessor(matrix) {
@@ -147,9 +147,9 @@ class A {
         let n = 0;
 
         while (true) {
-            const x = A.fs(beta, n);
+            const x = this.fs(beta, n);
 
-            if (A.cmp(x, alpha) > 0) {
+            if (this.cmp(x, alpha) > 0) {
                 return x;
             }
 
@@ -158,9 +158,9 @@ class A {
     }
 
     static g(alpha, beta, s) {
-        if (A.isSuccessor(beta)) return alpha;
+        if (this.isSuccessor(beta)) return alpha;
 
-        const split = A.f(alpha, beta);
+        const split = this.f(alpha, beta);
 
         if (s === "") return split;
 
@@ -168,23 +168,23 @@ class A {
         const rest = s.slice(1);
 
         if (bit === "0")
-            return A.g(alpha, split, rest);
+            return this.g(alpha, split, rest);
 
-        return A.g(split, beta, rest);
+        return this.g(split, beta, rest);
     }
 
     static gInv(alpha, beta, target) {
-        if (A.isSuccessor(beta)) return "";
+        if (this.isSuccessor(beta)) return "";
 
-        const split = A.f(alpha, beta);
-        const c = A.cmp(target, split);
+        const split = this.f(alpha, beta);
+        const c = this.cmp(target, split);
 
         if (c === 0) return "";
 
         if (c < 0)
-            return "0" + A.gInv(alpha, split, target);
+            return "0" + this.gInv(alpha, split, target);
 
-        return "1" + A.gInv(split, beta, target);
+        return "1" + this.gInv(split, beta, target);
     }
 
     static h(x, k = 0.5) {
@@ -210,12 +210,12 @@ class A {
         const rest = s.slice(1);
 
         if (bit === "0")
-            return k * A.hInv(rest, k);
+            return k * this.hInv(rest, k);
 
-        return k + (1 - k) * A.hInv(rest, k);
+        return k + (1 - k) * this.hInv(rest, k);
     }
 }
-class B {
+class Y_Sequence {
     static cmp(a, b) {
     if (a === "Limit" && b === "Limit") return 0;
     if (a === "Limit") return 1;
@@ -463,9 +463,9 @@ class B {
 
         while (true) {
 
-            const x = B.fs(beta, n);
+            const x = this.fs(beta, n);
 
-            if (B.cmp(x, alpha) > 0) {
+            if (this.cmp(x, alpha) > 0) {
                 return x;
             }
 
@@ -475,22 +475,22 @@ class B {
 
 
     static g(alpha, beta, s) {
-        if (B.isSuccessor(beta)) return alpha;
-        const split = B.f(alpha, beta);
+        if (this.isSuccessor(beta)) return alpha;
+        const split = this.f(alpha, beta);
         if (s === "") return split;
         const bit = s[0];
         const rest = s.slice(1);
-        if (bit === "0") return B.g(alpha, split, rest);
-        return B.g(split, beta, rest);
+        if (bit === "0") return this.g(alpha, split, rest);
+        return this.g(split, beta, rest);
     }
 
     static gInv(alpha, beta, target) {
-        if (B.isSuccessor(beta)) return "";
-        const split = B.f(alpha, beta);
-        const c = B.cmp(target, split);
+        if (this.isSuccessor(beta)) return "";
+        const split = this.f(alpha, beta);
+        const c = this.cmp(target, split);
         if (c === 0) return "";
-        if (c < 0) return "0" + B.gInv(alpha, split, target);
-        return "1" + B.gInv(split, beta, target);
+        if (c < 0) return "0" + this.gInv(alpha, split, target);
+        return "1" + this.gInv(split, beta, target);
     }
 
     static h(x, k = 0.5) {
@@ -513,8 +513,8 @@ class B {
         if (s === "") return k;
         const bit = s[0];
         const rest = s.slice(1);
-        if (bit === "0") return k * B.hInv(rest, k);
-        return k + (1 - k) * B.hInv(rest, k);
+        if (bit === "0") return k * this.hInv(rest, k);
+        return k + (1 - k) * this.hInv(rest, k);
     }
 }
 
@@ -526,12 +526,12 @@ TO CHECK WHENTHER THE CONVERSION IS CORRECT, check if A == ConvB(ConvA(A)) for a
 */
 
 function Conv_BMS(ord) {
-    return B.g(B.ZERO,LimAinB,A.gInv(A.ZERO,"Limit",ord))
-    // Inside intervals [B.ZERO,LimAinB] , the adress of that ordinal in A is preserved
+    return Y_Sequence.g(Y_Sequence.ZERO,LimAinB,BMS.gInv(BMS.ZERO,"Limit",ord))
+    // Inside intervals [Y_Sequence.ZERO,LimAinB] , the adress of that ordinal in A is preserved
 }
 
 function Conv_Y_sequence(ord) {
-    return A.g(A.ZERO,"Limit",B.gInv(B.ZERO, LimAinB, ord));
-    // Inside intervals [B.ZERO,LimAinB] , the adress of that ordinal in B is preserved
+    return BMS.g(BMS.ZERO,"Limit",Y_Sequence.gInv(Y_Sequence.ZERO, LimAinB, ord));
+    // Inside intervals [Y_Sequence.ZERO,LimAinB] , the adress of that ordinal in B is preserved
 }
 
