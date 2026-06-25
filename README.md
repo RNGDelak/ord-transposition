@@ -26,12 +26,15 @@ LPrSS <-> CNF
 
 This mean this is practically acceptable accurancy converted between these notation
 
+```
 BMS -> 2 Shifted OCF
+```
 
 ### Merely Converted
 
 This mean the accruancy is still unacceptably bad
 
-BMS <-> Y sequence
-
+```
+BMS <-> Y-sequence
+```
 
