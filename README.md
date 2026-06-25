@@ -12,7 +12,8 @@ The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.
 
 This mean this is mathematically perfect converted between these notation
 
-BMS -> AMS -> PMS -> 0Y -> Vulcaniz
+BMS <-> PMS <-> AMS -> 0Y 
+             -> Vulcaniz
 
 LPrSS <-> CNF
 
