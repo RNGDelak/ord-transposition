@@ -2,7 +2,6 @@
 For pretty pringtin use CNF.pretty
 */
 
-// System A for this example : CNF
 class CNF {
     static asp(str) {
         if (!str) return ["", ""];
@@ -187,7 +186,6 @@ class CNF {
     }
 }
 
-// System B for this example : LPrSS
 class B {
 
     static cmp(a, b) {
@@ -287,17 +285,12 @@ class B {
     }
 }
 
-let LimAinB = [0, 2] // Lim(CNF) is 0,2 in LPrSS
-/*
-Special case : if lim(A) = Lim(B) then LimAinB = "Limit"
-*/
+let Lim_CNF_in_LPrSS = [0, 2] // Lim(CNF) is 0,2 in LPrSS
 
 function Conv_CNF(ord) {
-    return LPrSS.g(LPrSS.ZERO, LimAinB, CNF.gInv(CNF.ZERO, "Limit", ord))
-    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in A is preserved
+    return LPrSS.g(LPrSS.ZERO, Lim_CNF_in_LPrSS, CNF.gInv(CNF.ZERO, "Limit", ord))
 }
 
 function Conv_LPrSS(ord) {
-    return CNF.g(CNF.ZERO, "Limit", LPrSS.gInv(LPrSS.ZERO, LimAinB, ord));
-    // Inside intervals [LPrSS.ZERO,LimAinB] , the adress of that ordinal in B is preserved
+    return CNF.g(CNF.ZERO, "Limit", LPrSS.gInv(LPrSS.ZERO, Lim_CNF_in_LPrSS, ord));
 }
