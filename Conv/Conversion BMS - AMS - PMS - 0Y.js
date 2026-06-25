@@ -108,5 +108,5 @@ function PMStoVZ(matrix) {
 
 /*
 Pipeline : BMS <-> PMS <-> AMS -> 0Y
-                               -> Vulcaniz
+                        -> Vulcaniz
 */
