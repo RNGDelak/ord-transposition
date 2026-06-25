@@ -12,22 +12,26 @@ The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.
 
 This mean this is mathematically perfect converted between these notation
 
-- BMS <-> PMS <-> AMS -> 0Y 
+```
+BMS <-> PMS <-> AMS -> 0Y 
 
-               -> Vulcaniz
+             -> Vulcaniz
+```
 
-- LPrSS <-> CNF
+```
+LPrSS <-> CNF
+```
 
 ### Accurately converted
 
 This mean this is practically acceptable accurancy converted between these notation
 
-- BMS -> 2 Shifted OCF
+BMS -> 2 Shifted OCF
 
 ### Merely Converted
 
 This mean the accruancy is still unacceptably bad
 
-- BMS <-> Y sequence
+BMS <-> Y sequence
 
 
