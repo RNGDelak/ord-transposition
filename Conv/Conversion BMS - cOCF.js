@@ -1022,7 +1022,7 @@ class BMS {
 let Lim_cOCF_in_BMS = [[0,0,0,0],[1,1,1,1],[2,2,0,0]] // Lim(cOCF) is (0,0,0,0)(1,1,1,1)(2,2) in BMS
 
 function Conv_cOCF(ord) {
-    return BMS.g(LPrSS.ZERO, Lim_cOCF_in_BMS, cOCF.gInv(cOCF.ZERO, "Limit", ord))
+    return BMS.g(BMS.ZERO, Lim_cOCF_in_BMS, cOCF.gInv(cOCF.ZERO, "Limit", ord))
 }
 
 function Conv_BMS(ord) {
