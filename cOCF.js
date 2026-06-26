@@ -59,11 +59,6 @@ function cf(e) {
     return s;
 }
 
-function isSuccessor(ord) {
-    if (ord == "Limit") return false
-    return (cf(ord) == '[]') ? true : false
-}
-
 // cmp expressions st1, st2 (if st1<st2 then -1; if st1=st2 then 0; if st1>st2 then 1)
 function cmp(st1, st2, b = false) {
 
@@ -737,4 +732,9 @@ function convert(st) {
     return d;
 }
 
+function isSuccessor(ord) {
+    if (ord == "Limit") return false
+    return (cof(ord) == '[]') ? true : false
+}
 
+const ZERO = '[]'
