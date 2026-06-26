@@ -1,3 +1,13 @@
+/*
+cOCF main functions
+Limit : (0,0,0,0)(1,1,1,1)(2,2)
+
+note : this is the old version of rgetar cOCF version (feb 2020).it doesnt have much formatting to get around
+*/
+
+
+let bo = 'Limit', col = 'c',format=1,mf=false;
+
 // get position of last symbol p of string st (if l=true then first)
 function getls(st, p, l = false) {
     let e = l ? -1 : st.length;
@@ -48,10 +58,16 @@ function cf(e) {
     return s;
 }
 
-// compare expressions st1, st2 (if st1<st2 then -1; if st1=st2 then 0; if st1>st2 then 1)
-function compare(st1, st2, b = false) {
+function isSuccessor(ord) {
+    if (ord == "Limit") return false
+    return (cf(ord) == '[]') ? true : false
+}
+
+// cmp expressions st1, st2 (if st1<st2 then -1; if st1=st2 then 0; if st1>st2 then 1)
+function cmp(st1, st2, b = false) {
+
     if (b) {
-        let ccnf = comparecnf(cnf(st1), cnf(st2));
+        let ccnf = cmpcnf(cnf(st1), cnf(st2));
         let c = st1 == st2 ? 0 : [...st1].reverse() > [...st2].reverse() ? 1 : -1;
         if (ccnf != c)
             return ccnf;
@@ -62,22 +78,22 @@ function compare(st1, st2, b = false) {
 
 // delete all boosters of b < b, add a booster
 function bbc(a, b) {
-    while (b != '' && b != col && compare(a, booster(b)) == 1)
+    while (b != '' && b != col && cmp(a, booster(b)) == 1)
         b = base(b);
     return bb(a, b);
 }
 
 function rest(l, st) {
-    return compare(l, st) == 1 ? st : rest(l, booster(st));
+    return cmp(l, st) == 1 ? st : rest(l, booster(st));
 }
 
 function ceill(l, st) {
-    return compare(l, st) == 1 ? l : bbc(ceill(l, booster(st)), st);
+    return cmp(l, st) == 1 ? l : bbc(ceill(l, booster(st)), st);
 }
 
 function ledge(st) {
     let x = booster(st);
-    return compare(col, x) == 1 ? col : bbc(ceill(col, x), base(st));
+    return cmp(col, x) == 1 ? col : bbc(ceill(col, x), base(st));
 }
 
 function cascade(x, c, st) {
@@ -101,14 +117,14 @@ function cof(st) {
             let c = cof(x);
             if (c == '[]')                // 3
                 return '[[]]';
-            else if (c == '[[]]' || compare(st, c) == 1)       // > C
+            else if (c == '[[]]' || cmp(st, c) == 1)       // > C
                 return c;
             else {
                 let l = ledge(st);
-                if (compare(l, c) < 1)
+                if (cmp(l, c) < 1)
                     return st;                    // 7
                 else {
-                    let ca = compare(bbc(ceill(l, x), base(st)), c);
+                    let ca = cmp(bbc(ceill(l, x), base(st)), c);
                     if (ca == 1)   // 4, 5, 8
                         return c;
                     else if (ca == 0)
@@ -121,8 +137,24 @@ function cof(st) {
     }
 }
 
+function expanlimit(n) {
+    let result = `[${'c'}]`;
+
+    for (let i = 0; i < n; i++) {
+        result = `[${result}${'c'}]`;
+    }
+
+    return '['+result+']';
+}
+
+function tostring(n) {
+    return "[".repeat(n) + "]".repeat(n);
+}
+
 // get n-th element of fs of ordinal st
 function fs(st, n) {
+    if (st == "Limit") return expanlimit(n)
+    if (typeof n == "number") n = tostring(n)
     if (st == bo) {
         let s = col;
         for (let i = 0; i < fostn(n); i++)
@@ -147,14 +179,14 @@ function fs(st, n) {
                     s = bb(x, s);
                 return s;
             }
-            else if (c == '[[]]' || compare(st, c) == 1)     // > C
+            else if (c == '[[]]' || cmp(st, c) == 1)     // > C
                 return bb(fs(x, n), beta);
             else {
                 let l = ledge(st);
-                if (compare(l, c) < 1)       // 7
+                if (cmp(l, c) < 1)       // 7
                     return n;
                 else {
-                    let ca = compare(bbc(ceill(l, x), base(st)), c);
+                    let ca = cmp(bbc(ceill(l, x), base(st)), c);
                     if (ca == 1)                   // 4, 5, 8
                         return bb(fs(x, n), beta);
                     else if (ca == 0) {              // 9
@@ -186,18 +218,18 @@ function minimize(st) {
             if (c == '[]')                // 3
                 s = st;
             //s=bb(bb('',booster(minimize(bb(base(x),base(st))))),base(st));
-            else if (c == '[[]]' || compare(st, c) == 1)       // > C
+            else if (c == '[[]]' || cmp(st, c) == 1)       // > C
                 s = st;
             //s=cascade(x,c,st);
             else {
                 let l = ledge(st);
-                if (compare(l, c) < 1)
+                if (cmp(l, c) < 1)
                     s = st;                    // 7
                 //s=cascade(x,c,st);
                 //minimize(bb(base(x),base(st)))
                 //s=bb(bb(booster(x),booster(minimize(bb(base(x),base(st))))),base(st));
                 else {
-                    let ca = compare(bbc(ceill(l, x), base(st)), c);
+                    let ca = cmp(bbc(ceill(l, x), base(st)), c);
                     if (ca == 1)   // 4, 5, 8
                         s = st;
                     //s=cascade(x,c,st);
@@ -219,7 +251,7 @@ function minimize(st) {
 
 // is st ε number
 function isepsilon(st) {
-    return st == '' ? false : st == col || st == bo ? true : compare(st, booster(st)) < 1;
+    return st == '' ? false : st == col || st == bo ? true : cmp(st, booster(st)) < 1;
 }
 
 // largest ε nember ≤ CNF st (if st < ε_0 then '')
@@ -236,14 +268,14 @@ function floorepsilon(st) {
 
 // is st Ω number
 function isOmega(st) {
-    return st == '' ? false : st == col || st == bo ? true : compare(col, booster(st)) < 1;
+    return st == '' ? false : st == col || st == bo ? true : cmp(col, booster(st)) < 1;
 }
 
 // remove boosters of st < c
 function floorOmega(st, c = col) {
-    //while(st!=''&&st!=col&&st!=c&&compare(c,booster(st))==1)
-    while (st != '' && st != col && st != c && compare(c, booster(st)) == 1)
-        //while(st!=''&&(compare(c,st)==1||compare(c,booster(st))==1))
+    //while(st!=''&&st!=col&&st!=c&&cmp(c,booster(st))==1)
+    while (st != '' && st != col && st != c && cmp(c, booster(st)) == 1)
+        //while(st!=''&&(cmp(c,st)==1||cmp(c,booster(st))==1))
         st = base(st);
     return st;
 }
@@ -298,8 +330,8 @@ function omegapower(st) {
     return [[st, 1]];
 }
 
-// compare CNFs st1, st2 (if st1<st2 then -1; if st1=st2 then 0; if st1>st2 then 1)
-function comparecnf(st1, st2) {
+// cmp CNFs st1, st2 (if st1<st2 then -1; if st1=st2 then 0; if st1>st2 then 1)
+function cmpcnf(st1, st2) {
     if (st1.toString() == st2.toString())
         return 0;
     if (st1 == '')
@@ -309,17 +341,17 @@ function comparecnf(st1, st2) {
     let b1 = !Array.isArray(st1);
     let b2 = !Array.isArray(st2);
     if (b1 && b2)
-        return compare(st1, st2);
+        return cmp(st1, st2);
     let c;
     if (b1) {
-        c = compare(st1, floorepsilon(st2));
+        c = cmp(st1, floorepsilon(st2));
         return c == 0 ? -1 : c;
     }
     if (b2) {
-        c = compare(floorepsilon(st1), st2);
+        c = cmp(floorepsilon(st1), st2);
         return c == 0 ? 1 : c;
     }
-    /*b1=st1[0].length==2;            // to compare CNF and extended CNF
+    /*b1=st1[0].length==2;            // to cmp CNF and extended CNF
     b2=st2[0].length==2;
     if(b1^b2){
        if(b1)
@@ -330,21 +362,21 @@ function comparecnf(st1, st2) {
     let i1 = st1.length - 1;
     let i2 = st2.length - 1;
     do {
-        //if(b1&&b2){                  // to compare CNF and extended CNF
+        //if(b1&&b2){                  // to cmp CNF and extended CNF
         if (st1[0].length == 2 && st2[0].length == 2) {
-            c = comparecnf(st1[i1][0], st2[i2][0]);
+            c = cmpcnf(st1[i1][0], st2[i2][0]);
             if (c != 0)
                 return c;
             c = st1[i1][1] > st2[i2][1] ? 1 : st1[i1][1] < st2[i2][1] ? -1 : 0;
         }
         else {
-            c = compare(st1[i1][0], st2[i2][0]);
+            c = cmp(st1[i1][0], st2[i2][0]);
             if (c != 0)
                 return c;
-            c = comparecnf(st1[i1][1], st2[i2][1]);
+            c = cmpcnf(st1[i1][1], st2[i2][1]);
             if (c != 0)
                 return c;
-            c = comparecnf(st1[i1][2], st2[i2][2]);
+            c = cmpcnf(st1[i1][2], st2[i2][2]);
         }
         if (c != 0)
             return c;
@@ -352,7 +384,7 @@ function comparecnf(st1, st2) {
         i2--;
     }
     while (i1 >= 0 && i2 >= 0);
-    //if(i1<0&&i2<0)                // to compare CNF and extended CNF
+    //if(i1<0&&i2<0)                // to cmp CNF and extended CNF
     //   return 0;
     if (i1 < 0)
         return -1;
@@ -384,11 +416,11 @@ function sumcnf(st1, st2) {
     let s = st2.slice(-1);
     let i = 0;
     if (b1 && b2) {
-        let c = comparecnf(s[0][0], st1[i][0]);
+        let c = cmpcnf(s[0][0], st1[i][0]);
         while (c > 0) {
             i++;
             if (i < st1.length)
-                c = comparecnf(s[0][0], st1[i][0]);
+                c = cmpcnf(s[0][0], st1[i][0]);
             else
                 break;
         }
@@ -400,13 +432,13 @@ function sumcnf(st1, st2) {
         }
     }
     else {
-        let c0 = compare(s[0][0], st1[i][0]);
-        let c1 = comparecnf(s[0][1], st1[i][1]);
+        let c0 = cmp(s[0][0], st1[i][0]);
+        let c1 = cmpcnf(s[0][1], st1[i][1]);
         while (c0 > 0 || (c0 == 0 && c1 > 0)) {
             i++;
             if (i < st1.length) {
-                c0 = compare(s[0][0], st1[i][0]);
-                c1 = comparecnf(s[0][1], st1[i][1]);
+                c0 = cmp(s[0][0], st1[i][0]);
+                c1 = cmpcnf(s[0][1], st1[i][1]);
             }
             else
                 break;
@@ -470,7 +502,7 @@ function cnf(st, ext = false, b = true) {
         let s, t, i = -1;
         while (st) {
             [s, st] = isepsilon(st) ? [st, ''] : [booster(st), base(st)];
-            if (c.length == 0 || compare(t, s) < 1) {
+            if (c.length == 0 || cmp(t, s) < 1) {
                 if (i < 0 || c[i][0] != s) {
                     c.push([s, 1]);
                     i++;
@@ -557,7 +589,7 @@ function getle(cf, x, ex, b) {
     let le = '';
     if (b) {
         let u = 0;
-        while (comparecnf(cf, [ex[u]]) > 0)
+        while (cmpcnf(cf, [ex[u]]) > 0)
             u++;
         if (u > 0)
             le = ex.slice(0, u);
@@ -614,7 +646,7 @@ function convertepsilon(st, ext = false) {
         //   if(f==bb(col,floorOmega(beta,bb(col,col))))
         //      sy='φ';}
     }
-    if (sy != '' && compare(bb(bb(bb('', f), f), f), x) > 0 && (sy != 'Ω' || compare(bb(j, col), x) == 1)) {
+    if (sy != '' && cmp(bb(bb(bb('', f), f), f), x) > 0 && (sy != 'Ω' || cmp(bb(j, col), x) == 1)) {
         let cf = cnf(f);
         let fx = floorOmega(x, f);
         let ex = cnf(x);
@@ -636,7 +668,7 @@ function convertepsilon(st, ext = false) {
                     while (u >= 0 && eex[u][0] == f)
                         u--;
                     u++;
-                    let ca = comparecnf(eex[u][2], cnf(beta));
+                    let ca = cmpcnf(eex[u][2], cnf(beta));
                     le = sumcnf(ca == 1 ? '' : ca == 0 ? [['', 1]] : beta, le);
                 }
                 break;
@@ -703,68 +735,5 @@ function convert(st) {
     }
     return d;
 }
-
-function rx(s, c, n, q) {
-    count++;
-    let x = document.createElement('li');
-    x.id = s;
-    x.innerHTML = convert(s);
-    if (s == '' || s.slice(0, 2) == '[]')
-        x.style.cursor = 'default';
-    x = x.outerHTML;
-    if (q > 0) {
-        let y = document.createElement('ul');
-        s = fs(c, n);
-        n = suc(n);
-        y.innerHTML = rx(s, c, n, q - 1);
-        x += y.outerHTML;
-    }
-    return x;
-}
-
-// small expansion of pair c > l
-function se(c, l, q) {
-    let n = '';
-    let s;
-    do {
-        s = fs(c, n);
-        n = suc(n);
-    }
-    while (l != '-' && compare(s, l, true) < 1)
-    return q == -1 ? s : rx(s, c, n, q);
-}
-
-function pl(c) {
-    let e = 0;
-    let l = c.previousSibling;
-    if (l == null) {
-        e++;
-        l = c.parentNode.previousSibling;
-    }
-    while (l.tagName != 'LI') {
-        e--;
-        l = l.lastChild;
-    }
-    return [l, e];
-}
-
-function cl(c) {
-    while (c.lastChild.tagName == 'UL')
-        c = c.lastChild;
-    return c;
-}
-
-function countli(c) {
-    if (c.tagName == 'LI')
-        return 1;
-    let n = 0;
-    for (let l = c.firstChild; l != null; l = l.nextSibling)
-        if (l.tagName == 'UL')
-            n += countli(l);
-        else
-            n++;
-    return n;
-}
-
 
 
