@@ -1,5 +1,5 @@
 /*
-For pretty pringtin use CNF.pretty
+For pretty printing use CNF.pretty
 */
 
 class CNF {
