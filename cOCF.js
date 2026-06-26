@@ -2,6 +2,7 @@
 cOCF main functions
 Limit : (0,0,0,0)(1,1,1,1)(2,2)
 
+- for pretty printing , use convert()
 note : this is the old version of rgetar cOCF version (feb 2020).it doesnt have much formatting to get around
 */
 
