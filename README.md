@@ -38,6 +38,7 @@ This section is basically every single ordinal system has 3 main function : fs,c
 
 ```
 BMS <-> Y-sequence
+    <-> cOCF
 ```
 
 ## In Progess
