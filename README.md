@@ -43,5 +43,5 @@ BMS <-> Y-sequence
 ## In Progess
 
 ```
-Verifying...
+Converting notations from Vulcaniz and 0Y...
 ```
