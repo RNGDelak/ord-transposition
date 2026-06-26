@@ -34,7 +34,7 @@ BMS -> 2 Shifted OCF
 
 This mean the accruancy is still unacceptably bad
 
-This section is basically every single ordinal system has a progammed fs,cmp and isSuccessor progammed but i only list the implemented one.
+This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
 ```
 BMS <-> Y-sequence
