@@ -28,7 +28,6 @@ This mean this is practically acceptable accurancy converted between these notat
 
 ```
 BMS -> 2 Shifted OCF
-BMS <-> cOCF (the correspondence is not proved)
 ```
 
 ### Merely Converted
@@ -39,6 +38,7 @@ This section is basically every single ordinal system has 3 main function : fs,c
 
 ```
 BMS <-> Y-sequence
+    <-> cOCF
 ```
 
 ## In Progess
