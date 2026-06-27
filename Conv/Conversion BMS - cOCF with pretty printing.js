@@ -8,7 +8,7 @@ class cOCF {
     static col = 'c';
     static format = 1;
     static mf = false;
-    static ZERO = '[]';
+    static ZERO = '';
 
     // get position of last symbol p of string st (if l=true then first)
     static getls(st, p, l = false) {
@@ -1019,12 +1019,40 @@ class BMS {
     }
 }
 
+
 let Lim_cOCF_in_BMS = [[0,0,0,0],[1,1,1,1],[2,2,0,0]] // Lim(cOCF) is (0,0,0,0)(1,1,1,1)(2,2) in BMS
 
+/*
+this is conversion is special : cOCF is symetrical to BMS except their bound ordinal
+
+to fix this, we divide the whole thing into 3 section
+ - sub epsilon
+ - sub buchholz
+ - sub TSS
+ - post TSS
+*/
 function Conv_cOCF(ord) {
-    return BMS.g(BMS.ZERO, Lim_cOCF_in_BMS, cOCF.gInv(cOCF.ZERO, "Limit", ord))
+    if (cOCF.cmp(ord , '[[c]]')==-1)
+    return BMS.g(BMS.ZERO, [[0,0],[1,1]], cOCF.gInv(cOCF.ZERO, "[[c]]", ord))
+    
+    if (cOCF.cmp(ord , '[[[]c]]')==-1)
+    return BMS.g([[0,0],[1,1]], [[0,0,0],[1,1,1]], cOCF.gInv("[[c]]", "[[[]c]]", ord))
+
+    if (cOCF.cmp(ord , '[[[][c]c]]')==-1)
+    return BMS.g([[0,0,0],[1,1,1]], [[0,0,0,0],[1,1,1,1]], cOCF.gInv("[[[]c]]", "[[[][c]c]]", ord))
+
+    return BMS.g([[0,0,0,0],[1,1,1,1]], Lim_cOCF_in_BMS , cOCF.gInv("[[[][c]c]]", 'Limit', ord))
 }
-// fixed
+
 function Conv_BMS(ord) {
-    return cOCF.g(cOCF.ZERO, "Limit", BMS.gInv(BMS.ZERO, Lim_cOCF_in_BMS, ord));
+    if (BMS.cmp(ord, [[0,0],[1,1]])==-1)
+    return cOCF.g(cOCF.ZERO, "[[c]]", BMS.gInv(BMS.ZERO,[[0,0],[1,1]] , ord))
+
+    if (BMS.cmp(ord, [[0,0,0],[1,1,1]])==-1)
+    return cOCF.g("[[c]]", "[[[]c]]", BMS.gInv([[0,0],[1,1]],[[0,0,0],[1,1,1]] , ord))
+
+    if (BMS.cmp(ord, [[0,0,0,0],[1,1,1,1]])==-1)
+    return cOCF.g("[[[]c]]", "[[[][c]c]]", BMS.gInv([[0,0,0],[1,1,1]],[[0,0,0,0],[1,1,1,1]] , ord))
+
+    return cOCF.g("[[[][c]c]]", "Limit", BMS.gInv([[0,0,0,0],[1,1,1,1]], Lim_cOCF_in_BMS , ord))
 }
