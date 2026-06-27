@@ -737,4 +737,4 @@ function isSuccessor(ord) {
     return (cof(ord) == '[]') ? true : false
 }
 
-const ZERO = '[]'
+const ZERO = ''
