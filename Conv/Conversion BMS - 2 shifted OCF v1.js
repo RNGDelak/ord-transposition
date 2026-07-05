@@ -1,4 +1,5 @@
 // Im too lazy to warp it into a constructor so i did this
+// look for a better version? go to V2
 
 function conv(matrix) {
     function eq(a, b) {

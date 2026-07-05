@@ -1,3 +1,5 @@
+// V2 improvement : lossless conversion so all terms preserved :P
+
 
 function conv(matrix) {
   function eq(a, b) {

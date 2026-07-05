@@ -192,8 +192,76 @@ function VZtoBMS(X) {
     return Y;
 }
 
+function BMS_to_0Y(s) {
+  var itemSeparatorRegex = /[\t ,]/g;
+  var matrix = [];
+  
+  // 1. Parse or Normalise input into a standard 2D array
+  if (typeof s === "string") {
+    if (!/^(\(\d*(,\d*)*\))*$/.test(s)) return "";
+    matrix = JSON.parse(
+      "[" + s
+        .replace(itemSeparatorRegex, ",")
+        .replace(/\(/g, "[")
+        .replace(/\)/g, "]")
+        .replace(/\]\[/g, "],[") + "]"
+    );
+  } else if (Array.isArray(s)) {
+    // Deep clone the array to prevent mutating the user's original data
+    for (var i = 0; i < s.length; i++) {
+      matrix.push(Array.isArray(s[i]) ? s[i].slice(0) : [s[i]]);
+    }
+  }
+
+  // Edge case safety check
+  if (!matrix.length || !matrix[0].length) return "";
+
+  // 2. Pad uneven columns with 0s (same behavior as your original script)
+  var X = matrix.length;
+  var Y = 0;
+  for (var i = 0; i < X; i++) {
+    if (matrix[i].length > Y) Y = matrix[i].length;
+  }
+  for (var i = 0; i < X; i++) {
+    while (matrix[i].length < Y) {
+      matrix[i].push(0);
+    }
+  }
+
+  // 3. Core Logic: Find parent nodes
+  var parentMatrix = [];
+  for (var y = 0; y < Y; y++) {
+    for (var x = 0; x < X; x++) {
+      var p;
+      if (y === 0) {
+        parentMatrix.push([]);
+        for (p = x; p >= 0; p--) {
+          if (matrix[p][y] < matrix[x][y]) break;
+        }
+      } else {
+        for (p = x; p >= 0; p = parentMatrix[p][y - 1]) {
+          if (matrix[p][y] < matrix[x][y]) break;
+        }
+      }
+      parentMatrix[x][y] = p;
+    }
+  }
+
+  // 4. Accumulate values to build the 0-Y sequence
+  var a = [];
+  for (var x = 0; x < X; x++) a.push(1);
+  for (var y = Y - 1; y >= 0; y--) {
+    for (var x = 0; x < X; x++) {
+      a[x] = matrix[x][y] === 0 ? 1 : a[x] + a[parentMatrix[x][y]];
+    }
+  }
+
+  return a.join(",");
+}
+
 /*
 Pipeline : BMS <-> PMS <-> AMS -> 0Y
                         -> Vulcaniz -> BMS
+            BMS -> 0Y
                                       
 */

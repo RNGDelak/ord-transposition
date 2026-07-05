@@ -13,13 +13,15 @@ The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.
 This mean this is mathematically perfect converted between these notation
 
 ```
-BMS <-> PMS <-> AMS -> 0Y 
+BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
-```
+    -> 0Y
+    -> **2 Shifted OCF (Version 2)**
 
-```
-LPrSS <-> CNF
+Y-sequence -> DBMS
+
+LPrSS <-> **CNF**
 ```
 
 ### Accurately converted
@@ -27,7 +29,13 @@ LPrSS <-> CNF
 This mean this is practically acceptable accurancy converted between these notation
 
 ```
-BMS -> 2 Shifted OCF
+BMS -> **2 Shifted OCF (Version 1)**
+
+SPrSS <-> **Veblen** (unproven)
+
+EBOCF -> **EWBOCF** (unproven)
+
+Dimensional Y-sequence <-> DBMS (unproven)
 ```
 
 ### Merely Converted
@@ -37,16 +45,20 @@ This mean the accruancy is still unacceptably bad
 This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
 ```
-BMS <-> Y-sequence (Weak/Normal)
-    <-> cOCF
+BMS <-> Y-sequence (Normal/Weak)
+    <-> **cOCF**
 
-HPrSS <-> LPrSS
+LPrSS <-> HPrSS
 ```
 
 ## In Progess
 
 ```
 Converting notations from FSS...
-Converting Y sequence to DBMS and reverse (up 1,3)
-Converting SPrSS to Veblen and reverse
 ```
+
+## Abbreviation
+
+- unproven means the correspondence between them is unproven
+
+- Bold mean that notation has a pretty printing function
