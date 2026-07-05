@@ -15,7 +15,7 @@ This mean this is mathematically perfect converted between these notation
 ```
 BMS <-> PMS <-> AMS -> 0Y 
 
-             -> Vulcaniz
+             -> Vulcaniz -> BMS
 ```
 
 ```
@@ -37,12 +37,12 @@ This mean the accruancy is still unacceptably bad
 This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
 ```
-BMS <-> Y-sequence
+BMS <-> Y-sequence (Weak/Normal)
     <-> cOCF
 ```
 
 ## In Progess
 
 ```
-Converting notations from Vulcaniz and 0Y...
+Converting notations from FSS...
 ```
