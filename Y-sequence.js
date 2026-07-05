@@ -1,4 +1,9 @@
-//ofc naruyoko thank u :3
+/*
+Based on the original program from https://github.com/Naruyoko/YNySequence/blob/master/script.js
+
+Y-sequence Main functions. Pretty printing is approximately associated with BMS.js via Uniform.js
+Limit : Lim(w-Y)
+*/
 
 function fs(s, n, legBasedAscension, stringify) {
     var lineBreakRegex = /\r?\n/g;

@@ -104,9 +104,96 @@ function PMStoVZ(matrix) {
     return sequence.join(",");
 }
 
+function VZtoBMS(X) {
+    if (X.length === 0) return [];
+    X = X.map(x => x - 1);
 
+
+    const Y = [];
+    let i = 0;
+
+    while (true) {
+
+        Y.push([X[i]]);
+        let f = X[i];
+        i++;
+
+        if (i === X.length) break;
+
+        while (true) {
+            if (X[i] <= f + 1) break;
+
+            let last = Y[Y.length - 1][Y[Y.length - 1].length - 1];
+            let r = Array.isArray(last) ? last[0] : last;
+
+            if (X[i] - f - 1 <= r) {
+                Y[Y.length - 1].push(X[i] - f - 1);
+            } else {
+                let Z = [];
+                r = X[i];
+
+                let p = Y[Y.length - 1][Y[Y.length - 1].length - 1];
+                if (Array.isArray(p)) p = p[0];
+
+                while (true) {
+                    Z.push(X[i] - r);
+
+                    if (X[i] - r < 0) {
+                        Z.pop();
+                        break;
+                    }
+
+                    if (i === X.length - 1) {
+                        i++;
+                        break;
+                    }
+
+                    i++;
+                }
+
+                if (
+                    typeof Y[Y.length - 1][Y[Y.length - 1].length - 1] === "number" &&
+                    Y[Y.length - 1][Y[Y.length - 1].length - 1] === p
+                ) {
+                    Y[Y.length - 1].pop();
+                }
+
+                if (
+                    typeof Y[Y.length - 1][Y[Y.length - 1].length - 1] === "number" &&
+                    Y[Y.length - 1][Y[Y.length - 1].length - 1] === p
+                ) {
+                    Y[Y.length - 1].pop();
+                }
+                Y[Y.length - 1].push([p, VZtoBMS(Z)]);
+
+                i--;
+            }
+
+            if (i === X.length - 1) {
+                i++;
+                break;
+            }
+
+            i++;
+        }
+
+        if (i === X.length) break;
+    }
+    const maxLen = Math.max(...Y.map(row => row.length));
+
+    return Y.map(row => {
+        const copy = [...row];
+        while (copy.length < maxLen) {
+            copy.push(0);
+        }
+        return copy;
+    });
+
+    return Y;
+}
 
 /*
 Pipeline : BMS <-> PMS <-> AMS -> 0Y
-                        -> Vulcaniz
+                        -> Vulcaniz -> BMS
+                                      
 */
