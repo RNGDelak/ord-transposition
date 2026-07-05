@@ -39,6 +39,8 @@ This section is basically every single ordinal system has 3 main function : fs,c
 ```
 BMS <-> Y-sequence (Weak/Normal)
     <-> cOCF
+
+HPrSS <-> LPrSS
 ```
 
 ## In Progess
