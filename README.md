@@ -45,4 +45,6 @@ BMS <-> Y-sequence (Weak/Normal)
 
 ```
 Converting notations from FSS...
+Converting Y sequence to DBMS and reverse (up 1,3)
+Converting SPrSS to Veblen and reverse
 ```
