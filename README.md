@@ -1,34 +1,34 @@
 # About this project
 
-I'm dreaming about converting ordinals between different notation systems smoothly, but it seems impossible... for now.
+im dreaming about converting ordinal between system smoothly but yep, it seems impossible
 
 ## Links
 
-The main construction: https://github.com/RNGDelak/ord-limbms/blob/main/README.md
+The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.md
 
-## Progress
+## Progess
 
-### Perfectly Converted
+### Perfectly converted
 
-These conversions are mathematically exact.
+This mean this is mathematically perfect converted between these notation
+
+```
+BMS <-> PMS <-> AMS -> 0Y
+
+             -> Vulcaniz -> BMS
+    -> 0Y
+    -> **2 Shifted OCF (Version 2)**
+
+Y-sequence -> DBMS
+
+LPrSS <-> **CNF**
+```
+
+### Accurately converted
+
+This mean this is practically acceptable accurancy converted between these notation
 
 <pre>
-BMS <-> PMS &lt;-&gt; AMS -&gt; 0Y
-
-             -&gt; Vulcaniz -&gt; BMS
-    -&gt; 0Y
-    -&gt; <strong>2 Shifted OCF (Version 2)</strong>
-
-Y-sequence -&gt; DBMS
-
-LPrSS &lt;-&gt; <strong>CNF</strong>
-</pre>
-
-### Accurately Converted
-
-These conversions are practically accurate enough for use, although not necessarily mathematically proven.
-
-
 BMS -> **2 Shifted OCF (Version 1)**
 
 SPrSS <-> **Veblen** (unproven)
@@ -36,26 +36,29 @@ SPrSS <-> **Veblen** (unproven)
 EBOCF -> **EWBOCF** (unproven)
 
 Dimensional Y-sequence <-> DBMS (unproven)
-
+</pre>
 
 ### Merely Converted
 
-The accuracy of these conversions is still not acceptable.
+This mean the accruancy is still unacceptably bad
 
-This section includes notation systems where the three core operations (`fs`, `cmp`, and `isSuccessor`) have been implemented, but only the implemented conversions are listed here.
+This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
-
+```
 BMS <-> Y-sequence (Normal/Weak)
     <-> **cOCF**
 
 LPrSS <-> HPrSS
+```
 
+## In Progess
 
-## In Progress
+```
+Converting notations from FSS...
+```
 
-Converting notations from MMS...
+## Abbreviation
 
-## Abbreviations
+- unproven means the correspondence between them is unproven
 
-* **unproven** means the correspondence between the notations has not been proven.
-* **Bold** means the notation has a pretty-printing function.
+- Bold mean that notation has a pretty printing function
