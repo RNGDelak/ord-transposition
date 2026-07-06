@@ -17,11 +17,11 @@ BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
     -> 0Y
-    -> <bold>2 Shifted OCF (Version 2)</bold>
+    -> <strong>2 Shifted OCF (Version 2)</strong>
 
 Y-sequence -> DBMS
 
-LPrSS <-> **CNF**
+LPrSS <-> <strong>CNF</strong>
 </pre>
 
 ### Accurately converted
@@ -29,11 +29,11 @@ LPrSS <-> **CNF**
 This mean this is practically acceptable accurancy converted between these notation
 
 <pre>
-BMS -> **2 Shifted OCF (Version 1)**
+BMS -> <strong>2 Shifted OCF (Version 1)</strong>
 
-SPrSS <-> **Veblen** (unproven)
+SPrSS <-> <strong>Veblen</strong> (unproven)
 
-EBOCF -> **EWBOCF** (unproven)
+EBOCF -> <strong>EWBOCF</strong> (unproven)
 
 Dimensional Y-sequence <-> DBMS (unproven)
 </pre>
@@ -46,7 +46,7 @@ This section is basically every single ordinal system has 3 main function : fs,c
 
 ```
 BMS <-> Y-sequence (Normal/Weak)
-    <-> **cOCF**
+    <-> <strong>cOCF</strong>
 
 LPrSS <-> HPrSS
 ```
