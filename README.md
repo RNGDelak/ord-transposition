@@ -35,7 +35,7 @@ SPrSS <-> <strong>Veblen</strong> (unproven)
 
 EBOCF -> <strong>EWBOCF</strong> (unproven)
 
-Dimensional Y-sequence <-> DBMS (unproven)
+Y-sequence <-> DBMS (unproven)
 </pre>
 
 ### Merely Converted
@@ -46,7 +46,7 @@ This section is basically every single ordinal system has 3 main function : fs,c
 
 <pre>
 BMS <-> Y-sequence (Normal/Weak)
-    <-> <strong>cOCF</strong>
+    <-> <strong>cOCF</strong> [in Rewamp]
 
 LPrSS <-> HPrSS
 </pre>
