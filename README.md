@@ -17,7 +17,7 @@ BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
     -> 0Y
-    -> **2 Shifted OCF (Version 2)**
+    -> <bold>2 Shifted OCF (Version 2)</bold>
 
 Y-sequence -> DBMS
 
