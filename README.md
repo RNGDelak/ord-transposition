@@ -54,7 +54,7 @@ LPrSS <-> HPrSS
 ## In Progess
 
 ```
-Converting notations from FSS...
+Rewamping cOCF...
 ```
 
 ## Abbreviation
