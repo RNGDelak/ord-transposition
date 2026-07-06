@@ -19,7 +19,7 @@ BMS <-> PMS <-> AMS -> 0Y
     -> 0Y
     -> <strong>2 Shifted OCF (Version 2)</strong>
 
-Y-sequence -> DBMS
+Y-sequence -> DBMS -> <strong>2 Shifted OCF (DBMS = BMS under QSS)</strong>
 
 LPrSS <-> <strong>CNF</strong>
 </pre>
