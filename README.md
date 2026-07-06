@@ -12,7 +12,7 @@ The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.
 
 This mean this is mathematically perfect converted between these notation
 
-```
+<pre>
 BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
@@ -22,7 +22,7 @@ BMS <-> PMS <-> AMS -> 0Y
 Y-sequence -> DBMS
 
 LPrSS <-> **CNF**
-```
+</pre>
 
 ### Accurately converted
 
