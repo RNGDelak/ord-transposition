@@ -12,7 +12,6 @@ The main construction: https://github.com/RNGDelak/ord-limbms/blob/main/README.m
 
 These conversions are mathematically exact.
 
-```text
 BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
@@ -22,13 +21,12 @@ BMS <-> PMS <-> AMS -> 0Y
 Y-sequence -> DBMS
 
 LPrSS <-> **CNF**
-```
 
 ### Accurately Converted
 
 These conversions are practically accurate enough for use, although not necessarily mathematically proven.
 
-```text
+
 BMS -> **2 Shifted OCF (Version 1)**
 
 SPrSS <-> **Veblen** (unproven)
@@ -36,7 +34,7 @@ SPrSS <-> **Veblen** (unproven)
 EBOCF -> **EWBOCF** (unproven)
 
 Dimensional Y-sequence <-> DBMS (unproven)
-```
+
 
 ### Merely Converted
 
@@ -44,18 +42,16 @@ The accuracy of these conversions is still not acceptable.
 
 This section includes notation systems where the three core operations (`fs`, `cmp`, and `isSuccessor`) have been implemented, but only the implemented conversions are listed here.
 
-```text
+
 BMS <-> Y-sequence (Normal/Weak)
     <-> **cOCF**
 
 LPrSS <-> HPrSS
-```
+
 
 ## In Progress
 
-```text
 Converting notations from MMS...
-```
 
 ## Abbreviations
 
