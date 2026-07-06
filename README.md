@@ -13,7 +13,7 @@ The main construction: https://github.com/RNGDelak/ord-limbms/blob/main/README.m
 These conversions are mathematically exact.
 
 <pre>
-BMS &lt;-&gt; PMS &lt;-&gt; AMS -&gt; 0Y
+BMS <-> PMS &lt;-&gt; AMS -&gt; 0Y
 
              -&gt; Vulcaniz -&gt; BMS
     -&gt; 0Y
