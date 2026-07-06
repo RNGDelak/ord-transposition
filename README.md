@@ -12,15 +12,17 @@ The main construction: https://github.com/RNGDelak/ord-limbms/blob/main/README.m
 
 These conversions are mathematically exact.
 
-BMS <-> PMS <-> AMS -> 0Y
+<pre>
+BMS &lt;-&gt; PMS &lt;-&gt; AMS -&gt; 0Y
 
-             -> Vulcaniz -> BMS
-    -> 0Y
-    -> **2 Shifted OCF (Version 2)**
+             -&gt; Vulcaniz -&gt; BMS
+    -&gt; 0Y
+    -&gt; <strong>2 Shifted OCF (Version 2)</strong>
 
-Y-sequence -> DBMS
+Y-sequence -&gt; DBMS
 
-LPrSS <-> **CNF**
+LPrSS &lt;-&gt; <strong>CNF</strong>
+</pre>
 
 ### Accurately Converted
 
