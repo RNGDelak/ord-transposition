@@ -44,12 +44,12 @@ This mean the accruancy is still unacceptably bad
 
 This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
-```
+<pre>
 BMS <-> Y-sequence (Normal/Weak)
     <-> <strong>cOCF</strong>
 
 LPrSS <-> HPrSS
-```
+</pre>
 
 ## In Progess
 
@@ -61,4 +61,4 @@ Converting notations from FSS...
 
 - unproven means the correspondence between them is unproven
 
-- Bold mean that notation has a pretty printing function
+- **Bold** mean that notation has a pretty printing function
