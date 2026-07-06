@@ -1,18 +1,18 @@
 # About this project
 
-im dreaming about converting ordinal between system smoothly but yep, it seems impossible
+I'm dreaming about converting ordinals between different notation systems smoothly, but it seems impossible... for now.
 
 ## Links
 
-The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.md
+The main construction: https://github.com/RNGDelak/ord-limbms/blob/main/README.md
 
-## Progess
+## Progress
 
-### Perfectly converted
+### Perfectly Converted
 
-This mean this is mathematically perfect converted between these notation
+These conversions are mathematically exact.
 
-```
+```text
 BMS <-> PMS <-> AMS -> 0Y
 
              -> Vulcaniz -> BMS
@@ -24,11 +24,11 @@ Y-sequence -> DBMS
 LPrSS <-> **CNF**
 ```
 
-### Accurately converted
+### Accurately Converted
 
-This mean this is practically acceptable accurancy converted between these notation
+These conversions are practically accurate enough for use, although not necessarily mathematically proven.
 
-```
+```text
 BMS -> **2 Shifted OCF (Version 1)**
 
 SPrSS <-> **Veblen** (unproven)
@@ -40,25 +40,24 @@ Dimensional Y-sequence <-> DBMS (unproven)
 
 ### Merely Converted
 
-This mean the accruancy is still unacceptably bad
+The accuracy of these conversions is still not acceptable.
 
-This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
+This section includes notation systems where the three core operations (`fs`, `cmp`, and `isSuccessor`) have been implemented, but only the implemented conversions are listed here.
 
-```
+```text
 BMS <-> Y-sequence (Normal/Weak)
     <-> **cOCF**
 
 LPrSS <-> HPrSS
 ```
 
-## In Progess
+## In Progress
 
-```
+```text
 Converting notations from MMS...
 ```
 
-## Abbreviation
+## Abbreviations
 
-- unproven means the correspondence between them is unproven
-
-- Bold mean that notation has a pretty printing function
+* **unproven** means the correspondence between the notations has not been proven.
+* **Bold** means the notation has a pretty-printing function.
