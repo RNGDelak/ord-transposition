@@ -52,7 +52,7 @@ function conv(matrix) {
     return lt(firstTerm(x)[1], firstTerm(y)[1]);
   }
 
-  function gt(x, y) { return !(x == y && lt(x, y)) }
+  function gt(x, y) { return !(x == y || lt(x, y)) }
 
   function add(x, y) {
     if (x == '0') { return y; }
