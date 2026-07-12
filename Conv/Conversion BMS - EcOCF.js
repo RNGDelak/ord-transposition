@@ -6412,7 +6412,7 @@ class BMS {
 let Lim_EcOCF_in_BMS = [[0,0,0,0],[1,1,1,1],[2,2,2,2]] // Lim(cOCF) is (0,0,0,0)(1,1,1,1)(2,2,2,2) in BMS
 
 /*
-this is conversion is special : cOCF is symetrical to BMS except their bound ordinal
+this is conversion is special : EcOCF is symetrical to BMS except their bound ordinal
 
 to fix this, we divide the whole thing into 3 section
  - sub epsilon
@@ -6420,7 +6420,7 @@ to fix this, we divide the whole thing into 3 section
  - sub TSS
  - post TSS
 */
-function Conv_cOCF(ord) {
+function Conv_EcOCF(ord) {
     if (cOCF.cmp(ord, '[[c!!') == -1)
         return BMS.g(BMS.ZERO, [[0,0],[1,1]], EcOCF.gInv(EcOCF.ZERO, '[[c!!', ord));
 
