@@ -46,7 +46,8 @@ This section is basically every single ordinal system has 3 main function : fs,c
 
 <pre>
 BMS <-> Y-sequence (Normal/Weak)
-    <-> <strong>cOCF</strong> [in Rewamp]
+    <-> <strong>cOCF</strong>
+    <-> <strong>EcOCF (Extended cOCF)</strong>
 
 LPrSS <-> HPrSS
 </pre>
