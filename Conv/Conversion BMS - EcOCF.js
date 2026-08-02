@@ -6175,7 +6175,7 @@ const EcOCF = (() => {
       return x;
    }
 
-   return{fs,cmp,isSuccessor,displayform,g,h,gInv,hInv,ZERO,Limit,f,sugar}
+   return{fs,cmp,isSuccessor,convert,g,h,gInv,hInv,ZERO,Limit,f,sugar}
 })();
 
 
