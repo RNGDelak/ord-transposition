@@ -14,7 +14,6 @@ This mean this is mathematically perfect converted between these notation
 
 <pre>
 Y-sequence <-> DBMS -> BMS <-> PMS <-> AMS -> 0Y
-
                             -> Vulcaniz -> BMS
                             -> 0Y
                             -> <strong>2 Shifted OCF (Version 2, DBMS = BMS under QSS)</strong>
