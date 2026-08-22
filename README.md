@@ -13,13 +13,11 @@ The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.
 This mean this is mathematically perfect converted between these notation
 
 <pre>
-BMS <-> PMS <-> AMS -> 0Y
+Y-sequence <-> DBMS -> BMS <-> PMS <-> AMS -> 0Y
 
-             -> Vulcaniz -> BMS
-    -> 0Y
-    -> <strong>2 Shifted OCF (Version 2)</strong>
-
-Y-sequence -> DBMS -> <strong>2 Shifted OCF (DBMS = BMS under QSS)</strong>
+                            -> Vulcaniz -> BMS
+                            -> 0Y
+                            -> <strong>2 Shifted OCF (Version 2, DBMS = BMS under QSS)</strong>
 
 LPrSS <-> <strong>CNF</strong>
 </pre>
@@ -55,7 +53,7 @@ LPrSS <-> HPrSS
 ## In Progess
 
 ```
-Rewamping cOCF...
+Finished the large island by adding DBMS to BMS
 ```
 
 ## Abbreviation
