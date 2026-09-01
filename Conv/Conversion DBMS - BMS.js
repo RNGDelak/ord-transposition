@@ -1,3 +1,12 @@
+function lastPositiveRow(column) {
+        for (var i = column.length - 1; i >= 0; i--) {
+            if (column[i] > 0) return i + 1;
+        }
+        return 0;
+    }
+
+
+
 function incrementPrefix(column, count) {
         if (count < 0 || count > column.length) {
             throw new Error("Illegal prefix length: " + count);
