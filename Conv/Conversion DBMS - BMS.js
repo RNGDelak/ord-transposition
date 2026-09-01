@@ -1,3 +1,31 @@
+function normalizeMatrix(matrix) {
+        if (!matrix || matrix.length === 0) {
+            throw new Error("Matrix cannot be empty");
+        }
+        var maxLen = 2;
+        for (var i = 0; i < matrix.length; i++) {
+            var col = matrix[i];
+            if (!Array.isArray(col)) throw new Error("Each column must be an array");
+            if (col.length > maxLen) maxLen = col.length;
+        }
+        var result = [];
+        for (var i = 0; i < matrix.length; i++) {
+            var col = matrix[i];
+            var newCol = col.slice();
+            while (newCol.length < maxLen) {
+                newCol.push(0);
+            }
+            for (var j = 0; j < newCol.length; j++) {
+                var v = newCol[j];
+                if (!Number.isInteger(v) || v < 0) {
+                    throw new Error("Columns must contain only non-negative integers, found: " + v);
+                }
+            }
+            result.push(newCol);
+        }
+        return result;
+    }
+
 function dbmsToBms(matrix) {
         var columns = normalizeMatrix(matrix);
         var n = columns[0].length;
