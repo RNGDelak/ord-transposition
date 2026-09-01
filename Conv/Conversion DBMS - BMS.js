@@ -1,3 +1,157 @@
+function incrementPrefix(column, count) {
+        if (count < 0 || count > column.length) {
+            throw new Error("Illegal prefix length: " + count);
+        }
+        var result = column.slice();
+        for (var i = 0; i < count; i++) {
+            result[i] += 1;
+        }
+        return result;
+    }
+
+    function decrementPrefix(column, count) {
+        if (count < 0 || count > column.length) {
+            throw new Error("Illegal prefix length: " + count);
+        }
+        var result = column.slice();
+        for (var i = 0; i < count; i++) {
+            if (result[i] === 0) {
+                throw new Error("The first " + count + " entries of column " + JSON.stringify(column) + " cannot all be decremented by one");
+            }
+            result[i] -= 1;
+        }
+        return result;
+    }
+
+    function incrementRow(column, row) {
+        if (row < 1 || row > column.length) {
+            throw new Error("Illegal actual row number: " + row);
+        }
+        var result = column.slice();
+        result[row - 1] += 1;
+        return result;
+    }
+
+    function zeroFromRow(column, row) {
+        if (row < 1 || row > column.length + 1) {
+            throw new Error("Illegal zeroing start row: " + row);
+        }
+        var result = column.slice();
+        for (var i = row - 1; i < result.length; i++) {
+            result[i] = 0;
+        }
+        return result;
+    }
+
+    function firstRowColumn(value, n) {
+        var col = new Array(n);
+        for (var i = 0; i < n; i++) col[i] = 0;
+        col[0] = value;
+        return col;
+    }
+
+    function arraysEqual(a, b) {
+        if (a.length !== b.length) return false;
+        for (var i = 0; i < a.length; i++) {
+            if (a[i] !== b[i]) return false;
+        }
+        return true;
+    }
+
+    function compareArrays(a, b) {
+        var len = Math.min(a.length, b.length);
+        for (var i = 0; i < len; i++) {
+            if (a[i] < b[i]) return -1;
+            if (a[i] > b[i]) return 1;
+        }
+        if (a.length < b.length) return -1;
+        if (a.length > b.length) return 1;
+        return 0;
+    }
+
+    function compareColumnSequences(seqA, seqB) {
+        var len = Math.min(seqA.length, seqB.length);
+        for (var i = 0; i < len; i++) {
+            var cmp = compareArrays(seqA[i], seqB[i]);
+            if (cmp !== 0) return cmp;
+        }
+        if (seqA.length < seqB.length) return -1;
+        if (seqA.length > seqB.length) return 1;
+        return 0;
+    }
+
+    function createAncestorIndex(columns) {
+        if (columns.length === 0) {
+            throw new Error("Cannot build ancestor relation for empty matrix");
+        }
+        var n = columns[0].length;
+        var colCount = columns.length;
+
+        var parents = [];
+        for (var r = 0; r <= n; r++) parents.push(new Array(colCount));
+        var ancestors = [];
+        for (var r = 0; r <= n; r++) ancestors.push(new Array(colCount));
+
+        for (var c = 0; c < colCount; c++) {
+            parents[0][c] = (c > 0) ? c - 1 : null;
+            var set = new Set();
+            for (var i = 0; i < c; i++) set.add(i);
+            ancestors[0][c] = set;
+        }
+
+        for (var r = 1; r <= n; r++) {
+            var rowIdx = r - 1;
+            for (var c = 0; c < colCount; c++) {
+                var candidates = Array.from(ancestors[r - 1][c]).sort(function(a, b) { return b - a; });
+                var parent = null;
+                for (var ci = 0; ci < candidates.length; ci++) {
+                    var cand = candidates[ci];
+                    if (columns[cand][rowIdx] < columns[c][rowIdx]) {
+                        parent = cand;
+                        break;
+                    }
+                }
+                parents[r][c] = parent;
+                if (parent !== null) {
+                    var set2 = new Set(ancestors[r][parent]);
+                    set2.add(parent);
+                    ancestors[r][c] = set2;
+                } else {
+                    ancestors[r][c] = new Set();
+                }
+            }
+        }
+
+        return {
+            hasAncestorColumn: function(elementColumn, row, ancestorColumn) {
+                if (elementColumn < 0 || elementColumn >= colCount) throw new RangeError();
+                if (row < 0 || row > n) throw new RangeError();
+                if (ancestorColumn < 0 || ancestorColumn >= colCount) throw new RangeError();
+                return ancestors[row][elementColumn].has(ancestorColumn);
+            },
+            parentIsColumn: function(elementColumn, row, parentColumn) {
+                if (elementColumn < 0 || elementColumn >= colCount) throw new RangeError();
+                if (row < 0 || row > n) throw new RangeError();
+                if (parentColumn < 0 || parentColumn >= colCount) throw new RangeError();
+                return parents[row][elementColumn] === parentColumn;
+            },
+            ancestorChain: function(elementColumn, row) {
+                if (row === 0) {
+                    var chain = [];
+                    for (var i = elementColumn - 1; i >= 0; i--) chain.push(i);
+                    return chain;
+                }
+                var chain2 = [];
+                var current = parents[row][elementColumn];
+                while (current !== null) {
+                    chain2.push(current);
+                    current = parents[row][current];
+                }
+                return chain2;
+            }
+        };
+    }
+
 function normalizeMatrix(matrix) {
         if (!matrix || matrix.length === 0) {
             throw new Error("Matrix cannot be empty");
