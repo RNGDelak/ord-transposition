@@ -15,7 +15,7 @@ In addition, N.Limit is the largest ordinal defined in system N
 Further Criteria is inside Criteria section
 */
 
-// Conceptually this return max{n | a < b[n]}
+// Conceptually this return min{n | a <= b[n]}
 function f(N,a,b){
   let i = 0
   while(N.cmp(a,N.fs(b,i)) > 0) {i++;}
@@ -29,7 +29,7 @@ function Path(N,a){
   while (N.cmp(a,currentOrdinal) < 0){
     let branch = f(N,a,currentOrdinal)
     currentPath.push(branch)
-    currentOrdinal = fs(currentOrdinal,branch)
+    currentOrdinal = N.fs(currentOrdinal,branch)
   }
   return currentPath
 }
@@ -39,7 +39,7 @@ function Collapse(N,a,base) {
   while (N.cmp(a,currentOrdinal) < 0) {
     let branch = f(N,a,currentOrdinal)
     if (branch >= base) {return currentOrdinal;} //Perform a collapse iff there an ancestor that has "branch" index >= base
-    currentOrdinal = fs(currentOrdinal,branch)
+    currentOrdinal = N.fs(currentOrdinal,branch)
   }
   return currentOrdinal //No collapse are performed
 }
