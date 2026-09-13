@@ -225,4 +225,18 @@ Therefore, the canonical path trace algorithm correctly converts any ordinal $a 
 
 ## V.Alogrithm Optimization
 
-This will also 
+The main idea of this is to accelerate the progess of approaching the target ordinal to be converted
+
+This can be achive by introducing stronger function than Successor, which will result in a speed up in several **Magnitude**
+
+But importantly, if a = b then N.YourCustomOps(a) = M.YourCustomOps(b) or else everything will fall apart
+
+Then instead of only successor the ordinal, making a prioritizer to sort Operation to optimize further
+
+## VI.Final words
+
+I feel like this is a groundbreaking discovery in ordinal and googology, because converting and analysing is one of the main jobs that googologist do
+
+Also of its generality, this also really strong, that you can apply this to most of the Ordinal System you see!
+
+Even though bruteforce, this have ended a countinous debate in googology that questioned "is there an alogrithm that converting ordinal between any ordinal"!!
