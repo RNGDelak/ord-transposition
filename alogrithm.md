@@ -66,3 +66,23 @@ PathMax(a) is just the largest element in Path(N,a) (N is the system that a belo
 */
 
 ```
+
+## II.Criteria
+
+For simplicity, let assuming cmp(a,b) will give out -1,0,1 for a<b , a=b and a>b respectively
+
+
+These are criteria that a system must hold to let this alogrithm work
+
+1) cmp must hold 2 of these properties
+   - cmp(a,b) = cmp(b,c) = k then cmp(a,c) = k
+   - cmp(a,b) = -cmp(b,a)
+
+2) fs must hold this property
+  - cmp(a, fs(a , n+1)) > 0 **AND** cmp(fs(a , n+1) , fs(a , n)) > 0 **For all Limit ordinal a and all natrual number n**
+
+The use of "cmp" instead of > for rigorous and egde-case patching
+
+3) The system itself should not contain any **Infinite Desending Chains** of ordinal
+
+## III.Proof
