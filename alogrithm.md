@@ -79,10 +79,45 @@ These are criteria that a system must hold to let this alogrithm work
    - cmp(a,b) = -cmp(b,a)
 
 2) fs must hold this property
-   - cmp(a, fs(a , n+1)) > 0 **AND** cmp(fs(a , n+1) , fs(a , n)) > 0 **For all Limit ordinal a and all natrual number n**
+   - cmp(a, fs(a , n+1)) > 0 **AND** cmp(fs(a , n+1) , fs(a , n)) > 0 **For all Limit ordinal a and all natrual number n** (*)
 
 The use of "cmp" instead of > for rigorous and egde-case patching
 
-3) The system itself should not contain any **Infinite Desending Chains** of ordinal
+3) The system itself should not contain any **Infinite Desending Chains** of ordinal (**)
 
 ## III.Proof
+
+### Lemma 1: Termination of Path and f
+
+Due to (*) and (**), this is obviously proven
+
+### Lemma 2: currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches N.Limit
+
+let c is iterator counter and initially set to 0
+
+c will increase by 1 every time we apply currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase)
+
+As a result of Slow growing hierachy Lemma, there exist a smallest ordinal O statisfy: (***)
+
+  - g_{O}(n) = c for all natural number n
+
+but once again, currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) is just equilvalent to c = g_{O}(n) whereas:
+  - O = currentOrdN+1 if no collapse is performed
+  - O = Collapsed(currentOrdN+1) is a collapse is performed
+
+so c will always equal to g_{currentOrdN}(n)
+
+but as we also know, g_{a}(n) = g_{b}(n) and a,b is **Minimised** then a = b since there exactly 1 solution for this equation g_{O}(n) = c in every system statisfying the following criterion as the result of Lemma (***)
+
+so that if c = g_{N.Limit}(n) then currentOrdN = N.Limit
+
+This also equilvalent to currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches a (the ordinal needed to convert) for sufficiently large base
+
+In specific, min_base = max{x | x ∈ path(a)} 
+
+### Lemma 3: g_{a}(n) = g_{b}(n) and a,b is Minimised then a = b in every system statisfying the following criterion
+
+This result also been shown in Lemma 2
+
+
+From following Lemma, the result is proven to be **true**
