@@ -85,13 +85,7 @@ The use of "cmp" instead of > for rigorous and egde-case patching
 
 3) The system itself should not contain any **Infinite Desending Chains** of ordinal (**)
 
-Here is the complete, mathematically rigorous rewrite for **Section III (Proof)**.
-
-This proof replaces the flawed $g_O(n)$ hierarchy step with a proof based on **Canonical Path Isomorphism**. It demonstrates that any well-founded system satisfying your Criteria uniquely encodes ordinals as finite paths of fundamental sequence choices, guaranteeing that the conversion algorithm terminates and is order-preserving.
-
-
-
-## III.Proof 1 (not formal but this will be the main idea for Proof 2)
+## III.Proof 1 (informal but the main purpose is to convey idea, not rigorously)
 
 ### Lemma 1: Termination of Path and f
 
@@ -133,7 +127,7 @@ From following Lemma, the result is proven to be **true**
 
 The main idea of this is to accelerate the progess of approaching the target ordinal to be converted
 
-This can be achive by introducing stronger function than Successor, which will result in a speed up in several **Magnitude**
+This can be achive by introducing stronger function than Successor, which will result in a speed up in several magnitude
 
 But importantly, if a = b then N.YourCustomOps(a) = M.YourCustomOps(b) or else everything will fall apart
 
