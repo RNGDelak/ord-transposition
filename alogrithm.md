@@ -4,7 +4,7 @@
 
 I will write a js program instead of pure math definition for apparent
 
-'''js
+```js
 /*
 Assume A.Zero, A.Limit, A.cmp, A.fs and A.Successor is defined
 Do so: B.Zero, B.Limit, B.cmp, B.fs and B.Successor
@@ -65,4 +65,4 @@ g stand for Slow growing Hierachy
 PathMax(a) is just the largest element in Path(N,a) (N is the system that a belong to)
 */
 
-'''
+```
