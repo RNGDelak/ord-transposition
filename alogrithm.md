@@ -75,13 +75,11 @@ For simplicity, let assuming cmp(a,b) will give out -1,0,1 for a<b , a=b and a>b
 These are criteria that a system must hold to let this alogrithm work
 
 1) cmp must hold 2 of these properties
-
    - cmp(a,b) = cmp(b,c) = k then cmp(a,c) = k
    - cmp(a,b) = -cmp(b,a)
 
-3) fs must hold this property
-
-  - cmp(a, fs(a , n+1)) > 0 **AND** cmp(fs(a , n+1) , fs(a , n)) > 0 **For all Limit ordinal a and all natrual number n**
+2) fs must hold this property
+   - cmp(a, fs(a , n+1)) > 0 **AND** cmp(fs(a , n+1) , fs(a , n)) > 0 **For all Limit ordinal a and all natrual number n**
 
 The use of "cmp" instead of > for rigorous and egde-case patching
 
