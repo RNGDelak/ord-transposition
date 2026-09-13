@@ -2,9 +2,11 @@
 
 ## I.Main idea
 
-This actually trying to counting up to g_{ordinal_to_convert}(sufficient large base) from 0 and in each step tries to find a corresponding ordinal_to_convert in notation B.
+So the whole alogrithm is just doing 2 thing to convert ordinal **target** to another system:
 
-When the counting progess is finished, ordinal_to_convert_B is the result 
+- Find the smallest base b such that there are **NO** ordinal a > target statisfying g_{a}(b) = g_{target}(base) (a is Minimalized in base b)
+
+- Then we enumerate all the ordinal k < a that k is is Minimalized in base b, at the same time analyse its corresponding to that system
 
 ## II.Alogrithm explaination
 
