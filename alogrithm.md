@@ -99,7 +99,7 @@ c will increase by 1 every time we apply currentOrdN = Collapse(N,N.Successor(cu
 
 As a result of Slow growing hierachy Lemma, there exist a smallest ordinal O statisfy: (***)
 
-  - g_{O}(n) = c for all natural number n
+  - g_{O}(n) = c for all natural number n >= c
 
 but once again, currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) is just equilvalent to c = g_{O}(n) whereas:
   - O = currentOrdN+1 if no collapse is performed
