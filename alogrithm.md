@@ -86,7 +86,7 @@ The use of "cmp" instead of > for rigorous and egde-case patching
 
 3) The system itself should not contain any **Infinite Desending Chains** of ordinal (**)
 
-## III.Proof 1 (informal but the main purpose is to convey idea, not rigorously)
+## III.Proof (informal but the main purpose is to convey idea, not rigorously)
 
 ### Lemma 1: Termination of Path and f
 
