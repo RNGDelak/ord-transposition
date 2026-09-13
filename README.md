@@ -1,10 +1,12 @@
 # About this project
 
-im dreaming about converting ordinal between system smoothly but yep, it seems impossible
+im dreaming about converting ordinal between system smoothly but yep, it seems impossible OH OH IT POSSIBLE NOW CHECK CHECK [THIS](https://github.com/RNGDelak/ord-transposition/blob/main/alogrithm.md)
 
 ## Links
 
-The main construction : https://github.com/RNGDelak/ord-limbms/blob/main/README.md
+The main construction : https://github.com/RNGDelak/ord-transposition/blob/main/alogrithm.md
+
+The approximate alogrithm : https://github.com/RNGDelak/ord-limbms/blob/main/README.md
 
 ## Progess
 
