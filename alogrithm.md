@@ -34,6 +34,7 @@ function Path(N,a){
   return currentPath
 }
 
+//Collapse the ordinal a with given base so that g_a(base) = g_Collapse(a,base)(base)
 function Collapse(N,a,base) {
   let currentOrdinal = N.Limit
   while (N.cmp(a,currentOrdinal) < 0) {
