@@ -134,6 +134,8 @@ But this proven the solution is unique and its the largest among all the others 
 
 ### Lemma 2: Convert will eventually halt
 
+**Inprogess**
+
 
 ## V.Alogrithm Optimization
 
