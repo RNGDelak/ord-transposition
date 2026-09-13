@@ -89,9 +89,48 @@ Here is the complete, mathematically rigorous rewrite for **Section III (Proof)*
 
 This proof replaces the flawed $g_O(n)$ hierarchy step with a proof based on **Canonical Path Isomorphism**. It demonstrates that any well-founded system satisfying your Criteria uniquely encodes ordinals as finite paths of fundamental sequence choices, guaranteeing that the conversion algorithm terminates and is order-preserving.
 
+
+
+## III.Proof 1 (not formal but this will be the main idea for Proof 2)
+
+### Lemma 1: Termination of Path and f
+
+Due to (*) and (**), this is obviously proven
+
+### Lemma 2: currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches N.Limit
+
+let c is iterator counter and initially set to 0
+
+c will increase by 1 every time we apply currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase)
+
+As a result of Slow growing hierachy Lemma, there exist a smallest ordinal O statisfy: (***)
+
+  - g_{O}(n) = c for all natural number n
+
+but once again, currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) is just equilvalent to c = g_{O}(n) whereas:
+  - O = currentOrdN+1 if no collapse is performed
+  - O = Collapsed(currentOrdN+1) is a collapse is performed
+
+so c will always equal to g_{currentOrdN}(n)
+
+but as we also know, g_{a}(n) = g_{b}(n) and a,b is **Minimised** then a = b since there exactly 1 solution for this equation g_{O}(n) = c in every system statisfying the following criterion as the result of Lemma (***)
+
+so that if c = g_{N.Limit}(n) then currentOrdN = N.Limit
+
+This also equilvalent to currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches a (the ordinal needed to convert) for sufficiently large base
+
+In specific, min_base = max{x | x ∈ path(a)} 
+
+### Lemma 3: g_{a}(n) = g_{b}(n) and a,b is Minimised then a = b in every system statisfying the following criterion
+
+This result also been shown in Lemma 2
+
+
+From following Lemma, the result is proven to be **true**
+
 ---
 
-## III. Proof
+## IV. Proof 2 (rewritten Proof 1)
 
 ### Definitions and Setup
 
@@ -182,3 +221,8 @@ where $\text{Reconstruct}(M, [i_0, \dots, i_{k-1}])$ sequentially applies $M.\te
 3. **Bijectivity:** By Lemma 2, every ordinal has a unique canonical path. Reconstructing across systems maps every canonical path in $N$ to its exact structural dual in $M$.
 
 Therefore, the canonical path trace algorithm correctly converts any ordinal $a \in N$ to its exact equivalent $\Phi(a) \in M$. $\blacksquare$
+
+
+## V.Alogrithm Optimization
+
+This will also 
