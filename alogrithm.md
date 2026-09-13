@@ -200,7 +200,7 @@ Trace both paths simultaneously starting from $\lambda_0 = \text{Limit}_N$.
 2. Thus, there must exist a first index $m$ where branch choice $i_m^{(a)} \neq i_m^{(b)}$.
 3. At step $m$, both paths share the common limit ordinal $\lambda_m$. Since $a <_N b \le_N \lambda_m$, $f(N, a, \lambda_m)$ finds the smallest index $i_m^{(a)}$ such that $a \le_N \text{fs}_N(\lambda_m, i_m^{(a)})$.
 4. Because $\text{fs}_N(\lambda_m, n)$ is strictly monotonically increasing with $n$ (Criterion 2), it follows directly that $i_m^{(a)} < i_m^{(b)}$.
-5. Hence, <span>$\vec{p}_a <_{\text{lex}} \vec{p}_b$</span>. $\blacksquare$
+5. Hence, $\vec{p}\_a <\_{\text{lex}} \vec{p}\_b$. $\blacksquare$
 
 ---
 
