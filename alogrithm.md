@@ -16,14 +16,14 @@ Further Criteria is inside Criteria section
 */
 
 // Conceptually this return min{n | a <= b[n]}
-function f(N,a,b){
+function f(N,a,b) {
   let i = 0
   while(N.cmp(a,N.fs(b,i)) > 0) {i++;}
   return i;
 }
 
 //Extract the canonical path that goes from Bound ordinal (Limit) to a
-function Path(N,a){
+function Path(N,a) {
   let currentPath = []
   let currentOrdinal = N.Limit
   while (N.cmp(a,currentOrdinal) < 0){
@@ -47,7 +47,7 @@ function Collapse(N,a,base) {
 
 
 //Convert ordinal a inside system N to its corresponding inside system M
-function Convert(N,M,a){
+function Convert(N,M,a) {
   let MaximalBase = Path(N,a).reduce((a, b) => Math.max(a, b), -Infinity); //Kinda hard to rigorously explain this here, move on Proof secion for explaination
   let currentOrdN = N.Zero
   let currentOrdM = M.Zero
@@ -88,40 +88,43 @@ The use of "cmp" instead of > for rigorous and egde-case patching
 
 ## III.Proof (informal but the main purpose is to convey idea, not rigorously)
 
-### Lemma 1: Termination of Path and f
+### Lemma 1: there exist a largest ordinal O statisfy: g_{O}(n) = c for all natural number n and c
 
-Due to (*) and (**), this is obviously proven
+to prove this, we write an alogrithm to find O
 
-### Lemma 2: currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches N.Limit
+```js
+/*
+Assuming A.Issuccessor, A.Predecessor, A.cmp, A.fs, A.Limit, A.Zero is defined
+*/
 
-let c is iterator counter and initially set to 0
+//This function evalutate the value of g_{a}(base)
+function g(N,a,base) {
+  if (N.cmp(N.Zero,a)==0) return 0; //base case
+  if (N.Issuccessor(a)) return g(N,N.Predecessor(a),base)+1; //Successor ordinal
+  return g(N,N.fs(a,base),base); //Limit ordinal
+}
 
-c will increase by 1 every time we apply currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase)
+//this will return min{n | a <= g_{b[n]}(base)}
+function o(N,a,b,base) {
+  let i = 0
+  while(a > g(N,N.fs(b,i),base)) {i++;}
+  return i;
+}
 
-As a result of Slow growing hierachy Lemma, there exist a smallest ordinal O statisfy: (***)
+function Solve(N,a,base) {
+  let Current = N.Limit
+  while(a < g(N,Current,base)) {
+    Current = N.fs(Current,o(N,a,Current,base))
+  }
+  return Current
+}
+```
 
-  - g_{O}(n) = c for all natural number n
+Even though the program will fail somewhere at w^w^w since it using double (capped at ~1.797 × 10^308 while max_safe is 9007199254740991). But conceptually this work
 
-but once again, currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) is just equilvalent to c = g_{O}(n) whereas:
-  - O = currentOrdN+1 if no collapse is performed
-  - O = Collapsed(currentOrdN+1) is a collapse is performed
+But this proven the solution is unique and its the largest among all the others solution
 
-so c will always equal to g_{currentOrdN}(n)
-
-but as we also know, g_{a}(n) = g_{b}(n) and a,b is **Minimised** then a = b since there exactly 1 solution for this equation g_{O}(n) = c in every system statisfying the following criterion as the result of Lemma (***)
-
-so that if c = g_{N.Limit}(n) then currentOrdN = N.Limit
-
-This also equilvalent to currentOrdN = Collapse(N,N.Successor(currentOrdN),MaximalBase) will eventually reaches a (the ordinal needed to convert) for sufficiently large base
-
-In specific, min_base = max{x | x ∈ path(a)} 
-
-### Lemma 3: g_{a}(n) = g_{b}(n) and a,b is Minimised then a = b in every system statisfying the following criterion
-
-This result also been shown in Lemma 2
-
-
-From following Lemma, the result is proven to be **true**
+### Lemma 3: Convert will eventually halt
 
 
 ## IV.Alogrithm Optimization
