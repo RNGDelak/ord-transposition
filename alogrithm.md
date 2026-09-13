@@ -1,7 +1,13 @@
 # So this document imma explaining a alogrithm that allow us to comvert ordinal between any well-founded ordinal system!
 
-## I.Alogrithm explaination
- 
+## I.Main idea
+
+This actually trying to counting up to g_{ordinal_to_convert}(sufficient large base) from 0 and in each step tries to find a corresponding ordinal_to_convert in notation B.
+
+When the counting progess is finished, ordinal_to_convert_B is the result 
+
+## II.Alogrithm explaination
+
 I will write a js program instead of pure math definition for apparent
 
 ```js
@@ -68,7 +74,7 @@ PathMax(a) is just the largest element in Path(N,a) (N is the system that a belo
 
 ```
 
-## II.Criteria
+## III.Criteria
 
 For simplicity, let assuming cmp(a,b) will give out -1,0,1 for a<b , a=b and a>b respectively
 
@@ -86,7 +92,7 @@ The use of "cmp" instead of > for rigorous and egde-case patching
 
 3) The system itself should not contain any **Infinite Desending Chains** of ordinal (**)
 
-## III.Proof (informal but the main purpose is to convey idea, not rigorously)
+## VI.Proof (informal but the main purpose is to convey idea, not rigorously)
 
 ### Lemma 1: there exist a largest ordinal O statisfy: g_{O}(n) = c for all natural number n and c
 
@@ -124,10 +130,10 @@ Even though the program will fail somewhere at w^w^w since it using double (capp
 
 But this proven the solution is unique and its the largest among all the others solution
 
-### Lemma 3: Convert will eventually halt
+### Lemma 2: Convert will eventually halt
 
 
-## IV.Alogrithm Optimization
+## V.Alogrithm Optimization
 
 The main idea of this is to accelerate the progess of approaching the target ordinal to be converted
 
@@ -137,7 +143,7 @@ But importantly, if a = b then N.YourCustomOps(a) = M.YourCustomOps(b) or else e
 
 Then instead of only successor the ordinal, making a prioritizer to sort Operation to optimize further
 
-## V.Final words
+## VI.Final words
 
 I feel like this is a groundbreaking discovery in ordinal and googology, because converting and analysing is one of the main jobs that googologist do
 
