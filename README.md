@@ -19,7 +19,7 @@ This mean this is mathematically perfect converted between these notation
                                         <-> Vulcaniz
                                         -> 0Y
                                         -> <strong>2 Shifted OCF (Version 2, DBMS = BMS under QSS)</strong>
-            -> DBMS (up to Lim(ω-Y) using weak magma)
+            -> DBMS (up to Lim(ω-Y) using weak magma, along with 0-Y,1-Y,2-Y,3-Y,4-Y,...)
 
 LPrSS <-> <strong>CNF</strong>
 
