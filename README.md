@@ -15,12 +15,15 @@ The approximate alogrithm : https://github.com/RNGDelak/ord-limbms/blob/main/REA
 This mean this is mathematically perfect converted between these notation
 
 <pre>
-Y-sequence <-> DBMS -> BMS <-> PMS <-> AMS -> 0Y
-                           <-> Vulcaniz
-                            -> 0Y
-                            -> <strong>2 Shifted OCF (Version 2, DBMS = BMS under QSS)</strong>
+ωY-sequence <-> DBMS (up to 1,3) -> BMS <-> PMS <-> AMS -> 0Y
+                                        <-> Vulcaniz
+                                        -> 0Y
+                                        -> <strong>2 Shifted OCF (Version 2, DBMS = BMS under QSS)</strong>
+            -> DBMS (up to Lim(ω-Y) using weak magma)
 
 LPrSS <-> <strong>CNF</strong>
+
+
 </pre>
 
 ### Accurately converted
@@ -44,7 +47,7 @@ This mean the accruancy is still unacceptably bad
 This section is basically every single ordinal system has 3 main function : fs,cmp and isSuccessor progammed but i only list the implemented one.
 
 <pre>
-BMS <-> Y-sequence (Normal/Weak)
+BMS <-> ωY-sequence (Normal/Weak)
     <-> <strong>cOCF</strong>
     <-> <strong>EcOCF (Extended cOCF)</strong>
 
