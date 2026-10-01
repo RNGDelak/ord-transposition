@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>ω-Y to DBMS</title>
+	<script>
+		const maxtries=1000;
+		function ackworm(seq,el){
+			if(seq.at(-1)==1){
+				return seq.slice(0,-1)
+			}
+			var ret=seq.slice(0,-1)
+			for(var i=0;i<el;i++){
+				ret.push(seq.at(-1)-1)
+			}
+			return ret
+		}
+		// rowseq=(s,e)=>(wy(s,e)+""!=lprss(s,e)+""?[console.log(s,e),lprss(s,e)][1]:lprss(s,e))
+		rowseq=ackworm
+		limitfunc=n=>[1,n+1]
+		function acksplitterms(seq){
+			var ret=[]
+			// skip initial 1 for infinite ordinals
+			for(var i=seq.every(x=>x==1)?0:1;i<seq.length;i++){
+				ret.push([seq[i]])
+			}
+			return ret
+		}
+		function ackjointerms(seq){
+			var finite=1
+			for(var i of seq){
+				if(i[0]!=1){
+					finite=0
+					break
+				}
+			}
+			var ret=finite?[]:[1]
+			for(var i of seq){
+				ret.push(i[0])
+			}
+			return ret
+		}
+		[splitterms,jointerms]=[acksplitterms,ackjointerms]
+		// a+(-b+c) for b<c
+		function addunadd(a,b,c){
+			var as=splitterms(a)
+			var bs=splitterms(b)
+			var cs=splitterms(c)
+			var bcs=[]
+			// terms removed from c by b
+			var drops=0
+			for(var i=0;i<bs.length;i++){
+				if(comparearrays(bs[i],cs[i])<0){
+					break
+				}
+				drops++
+			}
+			bcs=cs.slice(drops)
+			if(bcs.length==0){
+				return a
+			}
+			var ret=[]
+			for(var i=0;i<as.length;i++){
+				if(comparearrays(as[i],bcs[0])<0){
+					break
+				}
+				ret.push(as[i])
+			}
+			return jointerms(ret.concat(bcs))
+		}
+		function parseseq(seq){
+			var ret=seq.split(",").map(x=>parseInt(x))
+			return ret
+		}
+		function comparearrays(a,b){
+			for(var i=0;i<Math.min(a.length,b.length);i++){
+				if(a[i]>b[i]){
+					return 1
+				}
+				if(a[i]<b[i]){
+					return -1
+				}
+			}
+			return (a.length>b.length)-(a.length<b.length)
+		}
+		function maxrowbelow(mountain,column,row,inclusive){
+			var lastrow=[]
+			for(var i in mountain[column]){
+				var ai=parseseq(i)
+				// lexicographic compare ai and row
+				// todo: use comparearrays
+				// return lastrow if ai>row
+				var checklens=1
+				for(var j=0;j<Math.min(ai.length,row.length);j++){
+					if(ai[j]>row[j]){
+						return lastrow
+					}else if(ai[j]<row[j]){
+						checklens=0
+						break
+					}
+				}
+				if(checklens){
+					if(ai.length>row.length){
+						return lastrow
+					}
+					if(ai.length==row.length&&!inclusive){
+						return lastrow
+					}
+				}
+				lastrow=ai
+			}
+			// console.log("mrb",mountain,column,row,inclusive,lastrow)
+			return lastrow
+		}
+		function minrowabove(mountain,column,row,inclusive){
+			for(var i in mountain[column]){
+				var ai=parseseq(i)
+				if(comparearrays(ai,row)>0){
+					return ai
+				}
+			}
+			// nothing found
+			return [2]
+		}
+		function parent(mountain,column,row) {
+			var checkcol = column
+			var checkrow = row
+			while (mountain[checkcol][checkrow][0] >= mountain[column][row][0]) {
+				checkcol = mountain[checkcol][checkrow][1]
+				if (checkcol < 0) {
+					throw "checkcol<0";
+				}
+				checkrow = maxrowbelow(mountain, checkcol, checkrow, true)
+				if (checkrow.length == 0) {
+					// console.log(mountain,column,row,checkcol,checkrow)
+					throw "checkrow is []";
+				}
+			}
+			return [checkcol, checkrow]
+		}
+		function thenumber(mtn,col,row){
+			//console.log(mtn,col,row);
+			if(row+''=='1'){return ;}
+			if(mtn[col][row]+''=='undefined'){return '';}
+			return (thenumber(mtn,mtn[col][row][1],row)||0)+1;
+		}
+		function tomatrix(sequence){
+			var mountain=[]
+			// rows that occur in the mountain
+			// map from rows to themselves
+			var usedrows={}
+			for(var i=0;i<sequence.length;i++){
+				// column of mountain
+				var newcol={"1":[sequence[i],i-1]}
+				mountain.push(newcol)
+				usedrows[[1]]=[1]
+				// until current value is 1
+				// find parent
+				// new entry with value=current-parent, leftleg=parent
+				// row is row+1 if parent row=row, else yto's rule
+				var curvalue=sequence[i]
+				var currow=[1]
+				while(curvalue>1){
+					var parentcol,parentrow
+					[parentcol,parentrow]=parent(mountain,i,currow)
+					var nextrow=diffrow(currow,parentrow)
+					curvalue-=mountain[parentcol][parentrow][0]
+					newcol[nextrow]=[curvalue,parentcol]
+					usedrows[nextrow]=nextrow
+					currow=nextrow
+				}
+			}
+			// console.log(mountain)
+			// display mountain
+			var usedrows2=[]
+			for(var i in usedrows){
+				usedrows2.push(usedrows[i])
+			}
+			usedrows2.sort(comparearrays)
+			var matrix='';
+			for(let i=0;i<mountain.length;i++){
+				let mcol=''
+				let col=mountain[i];
+				let keys=Object.keys(col).map(x=>x.split(',').map(Number)).slice(1);
+				for(let j of keys){
+					let p=j.at(-1);
+					mcol+=','.repeat(p);
+					//console.log(i,j,mountain);
+					mcol+=thenumber(mountain,i,j);
+				}
+				matrix+='('+mcol.slice(1)+')';
+			}
+			return matrix.replaceAll('()','(0)');
+		}
+		function diffrow(currow,parentrow){
+			if(parentrow+""==currow+""){
+				var nextrow=currow.slice()
+				nextrow.push(1)
+				return nextrow
+			}else{
+				// yto's rule
+				// new row is largest row with fs elem
+				// in (parentrow,currow]
+				var tryindex=0;
+				while(comparearrays(limitfunc(tryindex),currow)<0){tryindex++;}
+				var tryrow=limitfunc(tryindex++)//[1,currow[1]+1]
+				var lastrow=limitfunc(tryindex++)//[1,currow[1]+2]
+				if(tryrow[1]>10){
+					throw "tryrow too high"
+				}
+				var tries=0
+				while(comparearrays(tryrow,currow)>0){
+					lastrow=tryrow
+					// maybe this should be 0
+					var nextelem=0
+					do{
+						tryrow=rowseq(lastrow,nextelem)
+						nextelem++
+						if(nextelem>100){
+							throw "nextelem sus"
+						}
+					}while(comparearrays(tryrow,parentrow)<=0)
+					// console.log(tryrow)
+					if(tries++>maxtries){
+						throw "tries sus"
+					}
+				}
+				return lastrow
+			}
+		}
+		function drawmountain(mountain,usedrows2){
+			outputbox.innerHTML=""
+			var row=outputbox.insertRow(-1)
+			row.style['background-color']='#888';
+			var cell=row.insertCell(-1)
+			cell.textContent="Row"
+			for(var j=0;j<mountain.length;j++){
+				var cell=row.insertCell(-1)
+				cell.textContent=j
+			}
+			// console.log(mountain)
+			for(var i of usedrows2){
+				for(var k=0;k<i.at(-1)-1;k++){
+					let row=outputbox.insertRow(-1);
+					for(var j=0;j<=mountain.length;j++){let c=row.insertCell(-1);if(!j){c.style['background-color']='#888';}}
+				}
+				var row=outputbox.insertRow(-1)
+				var rowcell=row.insertCell(-1)
+				rowcell.textContent=i<[1,2]?i.slice(1)+'':i+""
+				rowcell.style['background-color']='#888';
+				for(var j=0;j<mountain.length;j++){
+					var cell=row.insertCell(-1)
+					if(i.length>1){
+						if(mountain[j][i]){
+							cell.innerHTML=`<div title="${mountain[j][i][0]??""}, parent ${mountain[j][i][1]??""}">${thenumber(mountain,j,i)}</div>`
+						}
+						else{
+							cell.innerHTML=''
+						}
+					}else{
+						cell.innerHTML=`<div title="${mountain[j][i][0]??""}">-</div>`//(mountain[j][i][0]??"")+""
+					}
+				}
+				//console.log(row);
+			}
+		}
+		// gmountain=[]
+		// gusedrows2=[]
+		// function thing2(sequence){
+		// 	for(var i of sequence){
+		// 		if(i!=i)return;
+		// 	}
+		// 	// console.log(sequence)
+		// 	// build mountain
+		// 	// array of maps from row to [value,leftleg]
+		// 	var mountain=[]
+		// 	// rows that occur in the mountain
+		// 	// map from rows to themselves
+		// 	var usedrows={}
+		// 	for(var i=0;i<sequence.length;i++){
+		// 		// column of mountain
+		// 		var newcol={"1":[sequence[i],i-1]}
+		// 		mountain.push(newcol)
+		// 		usedrows[[1]]=[1]
+		// 		// until current value is 1
+		// 		// find parent
+		// 		// new entry with value=current-parent, leftleg=parent
+		// 		// row is row+1 if parent row=row, else yto's rule
+		// 		var curvalue=sequence[i]
+		// 		var currow=[1]
+		// 		while(curvalue>1){
+		// 			var parentcol,parentrow
+		// 			[parentcol,parentrow]=parent(mountain,i,currow)
+		// 			var nextrow=diffrow(currow,parentrow)
+		// 			curvalue-=mountain[parentcol][parentrow][0]
+		// 			newcol[nextrow]=[curvalue,parentcol]
+		// 			usedrows[nextrow]=nextrow
+		// 			currow=nextrow
+		// 		}
+		// 	}
+		// 	// console.log(mountain)
+		// 	// display mountain
+		// 	var usedrows2=[]
+		// 	for(var i in usedrows){
+		// 		usedrows2.push(usedrows[i])
+		// 	}
+		// 	usedrows2.sort(comparearrays)
+		// 	return [mountain,usedrows2]
+		// }
+		function thingy(){
+			if(levelbox.value=='ω'||levelbox.value=='w'){
+				limitfunc=n=>[1,n];
+				thing();
+				return }
+			var sequence=parseInt(levelbox.value)
+			limitfunc=n=>ackworm([1,2+sequence],n);
+			thing();
+		}
+		function thing(){
+			var sequence=parseseq(seqbox.value)
+			for(var i of sequence){
+				if(i!=i)return;
+			}
+			// console.log(sequence)
+			// build mountain
+			// array of maps from row to [value,leftleg]
+			var mountain=[]
+			// rows that occur in the mountain
+			// map from rows to themselves
+			var usedrows={}
+			for(var i=0;i<sequence.length;i++){
+				// column of mountain
+				var newcol={"1":[sequence[i],i-1]}
+				mountain.push(newcol)
+				usedrows[[1]]=[1]
+				// until current value is 1
+				// find parent
+				// new entry with value=current-parent, leftleg=parent
+				// row is row+1 if parent row=row, else yto's rule
+				var curvalue=sequence[i]
+				var currow=[1]
+				while(curvalue>1){
+					var parentcol,parentrow
+					[parentcol,parentrow]=parent(mountain,i,currow)
+					var nextrow=diffrow(currow,parentrow)
+					curvalue-=mountain[parentcol][parentrow][0]
+					newcol[nextrow]=[curvalue,parentcol]
+					usedrows[nextrow]=nextrow
+					currow=nextrow
+				}
+			}
+			// console.log(mountain)
+			// display mountain
+			var usedrows2=[]
+			for(var i in usedrows){
+				usedrows2.push(usedrows[i])
+			}
+			usedrows2.sort(comparearrays)
+			drawmountain(mountain,usedrows2)
+			gmountain=mountain
+			gusedrows2=usedrows2
+			var mountain=gmountain
+			document.getElementById('outputmat').innerHTML=tomatrix(sequence);
+
+			var cutnodetop
+			var badroot
+			// extending [] does nothing
+			if(mountain.length==0){
+				return
+			}
+			for(var i in mountain.at(-1)){
+				badroot=mountain.at(-1)[i][1]
+				cutnodetop=i
+			}
+			cutnodetop=parseseq(cutnodetop)
+			// row of the left leg of the cut node top
+			badrootrow=maxrowbelow(mountain,badroot,cutnodetop,false)
+			// extending successors does nothing
+			if(badrootrow.length==0){
+				return
+			}
+			var newmountain=mountain.slice()
+			newmountain[newmountain.length-1]=Object.assign({},newmountain.at(-1))
+			// fix cut node
+			delete newmountain.at(-1)[cutnodetop]
+			for(var i in newmountain.at(-1)){
+				newmountain.at(-1)[i]=[newmountain.at(-1)[i][0]-1,newmountain.at(-1)[i][1]]
+			}
+			// copy bad root entries above badrootrow
+			for(var i in mountain[badroot]){
+				if(comparearrays(parseseq(i),badrootrow)>0){
+					newmountain.at(-1)[i]=mountain[badroot][i]
+				}
+			}
+			// copy columns
+			for(var i=badroot+1;i<mountain.length;i++){
+				var newcol={}
+				for(var j in mountain[i]){
+					var aj=parseseq(j)
+					var leftleg=mountain[i][j][1]
+					if(leftleg>=badroot){
+						leftleg+=mountain.length-badroot-1
+					}
+					var newrow
+					// move left while staying high
+					var checkcol=i
+					var checkrow=aj
+					while(checkcol>badroot){
+						var checkvalue=mountain[checkcol][checkrow][0]
+						if(checkvalue>1){
+							[checkcol,checkrow]=parent(mountain,checkcol,checkrow)
+						}else{
+							// left leg
+							checkcol=mountain[checkcol][checkrow][1]
+							checkrow=maxrowbelow(mountain,checkcol,checkrow,false)
+						}
+					}
+					// erupt?
+					// weak magma: comparearrays(checkrow,aj)<0
+					// medium magma: comparearrays(checkrow,aj)<=0
+					if(checkcol==badroot&&comparearrays(checkrow,aj)<0&&comparearrays(checkrow,cutnodetop)<0){
+						var reftop=minrowabove(mountain,badroot,aj,false)
+						if(comparearrays(aj,badrootrow)>=0){
+							reftop=cutnodetop
+						}
+						var reference=maxrowbelow(mountain,mountain.length-1,reftop,false)
+						// console.log(i,reference,checkrow,aj)
+						newrow=addunadd(reference,checkrow,aj)
+						// console.log(newrow)
+					}else{
+						newrow=j
+					}
+					newcol[newrow]=[0,leftleg]
+				}
+				newmountain.push(newcol)
+			}
+			// drop magma
+			var usedrows={}
+			for(var i of gusedrows2){
+				usedrows[i]=i
+			}
+			for(var i=mountain.length;i<newmountain.length;i++){
+				var newcol={}
+				var currow=[]
+				for(var j in newmountain[i]){
+					var aj=parseseq(j)
+					var curparent=newmountain[i][j][1]
+					if(comparearrays(currow,aj)>=0){
+						console.log("squash",currow,aj)
+					}
+					while(comparearrays(currow,aj)<0){
+						// console.log("a",i,currow,maxrowbelow(newmountain,curparent,currow,true))
+						var nextrow=diffrow(currow,maxrowbelow(newmountain,curparent,currow,true))
+						if(comparearrays(nextrow,aj)>0){
+							console.log("squish",nextrow,aj)
+							break
+						}
+						currow=nextrow
+						// console.log("b",i,currow)
+						newcol[currow]=[0,curparent]
+						usedrows[currow]=currow
+					}
+				}
+				newmountain[i]=newcol
+			}
+			var usedrows2=[]
+			for(var i in usedrows){
+				usedrows2.push(usedrows[i])
+			}
+			usedrows2.sort(comparearrays)
+			// fix values
+			for(var i=mountain.length;i<newmountain.length;i++){
+				var keys=Object.keys(newmountain[i])
+				keys.reverse()
+				newmountain[i][keys[0]][0]=1
+				var curvalue=1
+				var lastleftleg=newmountain[i][keys[0]][1]
+				keys.shift()
+				for(var j of keys){
+					// console.log(i,parseseq(j))
+					// var [parentcol,parentrow]=parent(newmountain,i,parseseq(j))
+					// curvalue+=newmountain[parentcol][parentrow][0]
+					var leftlegrow=maxrowbelow(newmountain,lastleftleg,parseseq(j),true)
+					curvalue+=newmountain[lastleftleg][leftlegrow][0]
+					newmountain[i][j][0]=curvalue
+					lastleftleg=newmountain[i][j][1]
+				}
+			}
+			// drawmountain(newmountain,usedrows2)
+			// highlight br column entries and magma entries
+			let mbadrootrow=badrootrow;
+			//outputbox.getElementsByTagName("tr")[0].getElementsByTagName("td")[badroot+1].classList.add("brcolumnentry");
+			var rx=outputbox.getElementsByTagName("tr");
+			var ru=[];
+			for(let i of rx){
+				if(i.getElementsByTagName("td")[0].textContent!=''||i.getElementsByTagName("td")[1].textContent!=''){
+					ru.push(i);
+				}
+			}
+			for(var i=0;i<gusedrows2.length;i++){
+			 	if(comparearrays(gusedrows2[i],mbadrootrow)>0){
+			 		break
+			 	}
+			 	var cell=ru[i+1].getElementsByTagName("td")[badroot+1]
+			 	// magma columns in this row and also badroot if there's an entry
+			 	var magmacols=[]
+				if(cell.textContent!=""){
+					magmacols=[badroot]
+					cell.classList.add("brcolumnentry")
+				}
+			 	for(var j=badroot+1;j<mountain.length-1;j++){
+			 		var mountaincell=mountain[j][gusedrows2[i]]
+			 		var cell=ru[i+1].getElementsByTagName("td")[j+1]
+					if(mountaincell){
+			 			if(magmacols.includes(mountaincell[1])){
+			 				magmacols.push(j)
+			 				cell.classList.add("magmaentry")
+			 			}else{
+			 				cell.classList.add("eruptionentry")
+			 			}
+					}
+			 	}
+			}
+		}
+		// // extend^n and deleting last column=x->x[n]
+		// // eg 1,2->1,1,2, 1,3->1,2,5, etc
+		// function extend2(mountain){
+		// 	var cutnodetop
+		// 	var badroot
+		// 	// extending [] does nothing
+		// 	if(mountain.length==0){
+		// 		return
+		// 	}
+		// 	for(var i in mountain.at(-1)){
+		// 		badroot=mountain.at(-1)[i][1]
+		// 		cutnodetop=i
+		// 	}
+		// 	cutnodetop=parseseq(cutnodetop)
+		// 	// row of the left leg of the cut node top
+		// 	var badrootrow=maxrowbelow(mountain,badroot,cutnodetop,false)
+		// 	// extending successors does nothing
+		// 	if(badrootrow.length==0){
+		// 		return
+		// 	}
+		// 	var newmountain=mountain.slice()
+		// 	newmountain[newmountain.length-1]=Object.assign({},newmountain.at(-1))
+		// 	// fix cut node
+		// 	delete newmountain.at(-1)[cutnodetop]
+		// 	for(var i in newmountain.at(-1)){
+		// 		newmountain.at(-1)[i]=[newmountain.at(-1)[i][0]-1,newmountain.at(-1)[i][1]]
+		// 	}
+		// 	// copy bad root entries above badrootrow
+		// 	for(var i in mountain[badroot]){
+		// 		if(comparearrays(parseseq(i),badrootrow)>0){
+		// 			newmountain.at(-1)[i]=mountain[badroot][i]
+		// 		}
+		// 	}
+		// 	// copy columns
+		// 	for(var i=badroot+1;i<mountain.length;i++){
+		// 		var newcol={}
+		// 		for(var j in mountain[i]){
+		// 			var aj=parseseq(j)
+		// 			var leftleg=mountain[i][j][1]
+		// 			if(leftleg>=badroot){
+		// 				leftleg+=mountain.length-badroot-1
+		// 			}
+		// 			var newrow
+		// 			// move left while staying high
+		// 			var checkcol=i
+		// 			var checkrow=aj
+		// 			while(checkcol>badroot){
+		// 				var checkvalue=mountain[checkcol][checkrow][0]
+		// 				if(checkvalue>1){
+		// 					[checkcol,checkrow]=parent(mountain,checkcol,checkrow)
+		// 				}else{
+		// 					// left leg
+		// 					checkcol=mountain[checkcol][checkrow][1]
+		// 					checkrow=maxrowbelow(mountain,checkcol,checkrow,false)
+		// 				}
+		// 			}
+		// 			// erupt?
+		// 			// weak magma: comparearrays(checkrow,aj)<0
+		// 			// medium magma: comparearrays(checkrow,aj)<=0
+		// 			if(checkcol==badroot&&comparearrays(checkrow,aj)<0&&comparearrays(checkrow,cutnodetop)<0){
+		// 				var reftop=minrowabove(mountain,badroot,checkrow,false)
+		// 				if(comparearrays(aj,badrootrow)>0){
+		// 					reftop=cutnodetop
+		// 				}
+		// 				var reference=maxrowbelow(mountain,mountain.length-1,reftop,false)
+		// 				// console.log(i,reference,checkrow,aj)
+		// 				newrow=addunadd(reference,checkrow,aj)
+		// 				// console.log(newrow)
+		// 			}else{
+		// 				newrow=j
+		// 			}
+		// 			newcol[newrow]=[0,leftleg]
+		// 		}
+		// 		newmountain.push(newcol)
+		// 	}
+		// 	// drop magma
+		// 	var usedrows={}
+		// 	for(var i of gusedrows2){
+		// 		usedrows[i]=i
+		// 	}
+		// 	for(var i=mountain.length;i<newmountain.length;i++){
+		// 		var newcol={}
+		// 		var currow=[]
+		// 		for(var j in newmountain[i]){
+		// 			var aj=parseseq(j)
+		// 			var curparent=newmountain[i][j][1]
+		// 			if(comparearrays(currow,aj)>=0){
+		// 				console.log("squash",currow,aj)
+		// 			}
+		// 			while(comparearrays(currow,aj)<0){
+		// 				// console.log("a",i,currow,maxrowbelow(newmountain,curparent,currow,true))
+		// 				var nextrow=diffrow(currow,maxrowbelow(newmountain,curparent,currow,true))
+		// 				if(comparearrays(nextrow,aj)>0){
+		// 					console.log("squish",nextrow,aj)
+		// 					break
+		// 				}
+		// 				currow=nextrow
+		// 				// console.log("b",i,currow)
+		// 				newcol[currow]=[0,curparent]
+		// 				usedrows[currow]=currow
+		// 			}
+		// 		}
+		// 		newmountain[i]=newcol
+		// 	}
+		// 	var usedrows2=[]
+		// 	for(var i in usedrows){
+		// 		usedrows2.push(usedrows[i])
+		// 	}
+		// 	usedrows2.sort(comparearrays)
+		// 	// fix values
+		// 	for(var i=mountain.length;i<newmountain.length;i++){
+		// 		var keys=Object.keys(newmountain[i])
+		// 		keys.reverse()
+		// 		newmountain[i][keys[0]][0]=1
+		// 		var curvalue=1
+		// 		var lastleftleg=newmountain[i][keys[0]][1]
+		// 		keys.shift()
+		// 		for(var j of keys){
+		// 			// console.log(i,parseseq(j))
+		// 			// var [parentcol,parentrow]=parent(newmountain,i,parseseq(j))
+		// 			// curvalue+=newmountain[parentcol][parentrow][0]
+		// 			var leftlegrow=maxrowbelow(newmountain,lastleftleg,parseseq(j),true)
+		// 			curvalue+=newmountain[lastleftleg][leftlegrow][0]
+		// 			newmountain[i][j][0]=curvalue
+		// 			lastleftleg=newmountain[i][j][1]
+		// 		}
+		// 	}
+		// 	// drawmountain(newmountain,usedrows2)
+		// 	// generate sequence
+		// 	var seq=[]
+		// 	for(var i of newmountain){
+		// 		seq.push(i[[1]][0])
+		// 	}
+		// 	return seq
+		// }
+	</script>
+	<style type="text/css">
+		td {
+			width: 1.5em;
+			border: 1px solid black;
+		}
+		table {
+			border-collapse: collapse;
+			margin-top: 2px;
+		}
+		.brcolumnentry {
+			background-color: cyan;
+		}
+		.magmaentry {
+			background-color: red;
+		}
+		.eruptionentry {
+			background-color: yellow;
+		}
+	</style>
+</head>
+<body>
+<input id="seqbox" onkeyup="thing()">
+<button onclick="extend()">extend</button><br>
+<input id="levelbox" onkeyup="thingy()" value="ω" style="width: 2em">-Y
+<div id="outputmat"></div>
+<table id="outputbox"></table>
+<!--Eruption:<br>
+print("erupt",l,i+br,y,ybr,yrt,yr,y2)<br>
+erupt 0 2 (1, 1) (1,) (1, 2) (1, 1) (1, 1, 1)<br>
+l=0 i+br=2 y=[1,1] ybr=[1] yrt=[1,2] yr=[1,1] y2=[1,1,1]<br>
+iteration=0 col=2 row=[1,1] bad root row=[1] reference top=[1,2] reference=[1,1] dest=[1,1,1]<br>-->
+</body>
+</html>
